@@ -201,6 +201,23 @@ class MeterAudit(gl.Contract):
         self.total = u256(self.total + 1)
         return audit_id
 
+    @gl.public.write
+    def recheck(self, audit_id: str) -> None:
+        if audit_id not in self.verdicts or gl.message.sender_address != self.owners[audit_id]:
+            raise gl.vm.UserError('[EXPECTED] Only audit owner can recheck')
+        previous = json.loads(self.verdicts[audit_id])
+        result = self._adjudicate(json.loads(self.facts[audit_id]))
+        result['id'] = audit_id
+        result['revision'] = previous['revision'] + 1
+        result['appealed'] = audit_id in self.appeals
+        result['previous_classification'] = previous['classification']
+        result['corrected'] = result['classification'] != previous['classification'] or result['expected_cents'] != previous['expected_cents']
+        self.verdicts[audit_id] = json.dumps(result, sort_keys=True)
+        f = previous['facts']
+        prefix = f['tariff_id'] + ':' + f['period_end'][:7] + ':'
+        self.counts[prefix+previous['classification']] = u256(self.counts[prefix+previous['classification']]-1)
+        self.counts[prefix+result['classification']] = u256(self.counts.get(prefix+result['classification'], u256(0))+1)
+
     @gl.public.write.payable
     def appeal(self, audit_id: str) -> None:
         if audit_id not in self.verdicts:
@@ -211,7 +228,8 @@ class MeterAudit(gl.Contract):
             raise gl.vm.UserError('[EXPECTED] Exact appeal bond required')
         previous = json.loads(self.verdicts[audit_id])
         result = self._adjudicate(json.loads(self.facts[audit_id]))
-        result['id'] = audit_id; result['revision'] = 2
+        result['id'] = audit_id; result['revision'] = previous['revision'] + 1
+        result['appealed'] = True
         result['previous_classification'] = previous['classification']
         result['corrected'] = result['classification'] != previous['classification'] or result['expected_cents'] != previous['expected_cents']
         self.appeals[audit_id] = json.dumps(result, sort_keys=True)

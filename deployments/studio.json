@@ -1,0 +1,790 @@
+{
+  "network": "studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "deployer": "0xBC1399c55538eC034d4Da550C03c34Ae0C357f53",
+  "contracts": {
+    "registry": {
+      "tx_hash": "0x38e15896e23a741fe77ca459f9fc9308f2f4bc229439854648e88f6826ee89eb",
+      "code_sha256": "7fb7e73aa9143086d450975876b3cadc2e5bedbf182d8a90273dc3d14580ba8f",
+      "args": [],
+      "status": 7,
+      "execution": [
+        "SUCCESS",
+        "ERROR"
+      ],
+      "address": "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c"
+    },
+    "audit": {
+      "tx_hash": "0xda0b7a79e191582ee28b0cabc243340bb42a871eef0e6841ed205701eb38976d",
+      "code_sha256": "74af77151302053a58ec484d26a9dc92288eda63408da6bf400eeab18c86bea3",
+      "args": [
+        "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c",
+        1000000000000000
+      ],
+      "status": 7,
+      "execution": [
+        "SUCCESS",
+        "SUCCESS"
+      ],
+      "address": "0xB49c318C78a1e265db74f1611e173247e829556F",
+      "source_sha256": "99ed8b223a3af5690357f3845421af1eb919ec07ee44e9643ed6a26382b053f5",
+      "archive_entry_metadata": {
+        "runner.json": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_cmap.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/_codecs.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            2
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/adobe_glyphs.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/core_font_metrics.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/pdfdoc.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/std.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/symbol.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_codecs/zapfding.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_crypt_providers/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_crypt_providers/_base.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_crypt_providers/_cryptography.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_crypt_providers/_fallback.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_crypt_providers/_pycryptodome.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_doc_common.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_encryption.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_font.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_page.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_page_labels.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_protocols.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_reader.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/_layout_mode/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            6
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/_layout_mode/_fixed_width_page.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/_layout_mode/_text_state_manager.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/_layout_mode/_text_state_params.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_text_extraction/_text_extractor.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_utils.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_version.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/_writer.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/annotations/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/annotations/_base.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/annotations/_markup_annotations.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/annotations/_non_markup_annotations.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/constants.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/errors.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/filters.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/__init__.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_appearance_stream.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_base.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_data_structures.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_files.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_fit.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_image_inline.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            8
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_image_xobject.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_link.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_outline.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_rectangle.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_utils.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/generic/_viewerpref.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/pagerange.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/papersizes.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/types.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/xmp.py": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            15,
+            32,
+            10
+          ],
+          "external_attr": 25165824,
+          "create_system": 3
+        },
+        "contract/pypdf/LICENSE": {
+          "date_time": [
+            2026,
+            10,
+            14,
+            14,
+            54,
+            56
+          ],
+          "external_attr": 2175008768,
+          "create_system": 3
+        }
+      }
+    },
+    "escrow": {
+      "tx_hash": "0xe2957461cc51d863f98458c5d5a20301e0f01652e60ebc0f97ac84b3a2f1d98e",
+      "code_sha256": "bdd7afe80e7100d91128ef52236d58e3b1ca2135d4aa69b6da143ea8d6a86974",
+      "args": [
+        "0xB49c318C78a1e265db74f1611e173247e829556F",
+        1000
+      ],
+      "status": 7,
+      "execution": [
+        "SUCCESS",
+        "ERROR"
+      ],
+      "address": "0xAB7Ca5538EFD4323C4129f45F82254d10b52903D"
+    }
+  },
+  "operations": {
+    "register:pse.7.2026": {
+      "tx_hash": "0xa515092e4eebfe0aabe41b45a3e35f83c575ea22281f0fb41379bfa26c5578bd",
+      "status": "VERIFIED"
+    },
+    "register:avista.1.2026": {
+      "tx_hash": "0xb9f95c3d95ba86c3cbc4e57989856fe12fef3ab2b1570182d37fa1696c5847f9",
+      "status": "VERIFIED"
+    },
+    "register:pacific.16.2026": {
+      "tx_hash": "0x913683e2f7adbe85d5eee226629ee82ec7dab1374e48b60f0e359c3a9757dd4d",
+      "status": "VERIFIED"
+    }
+  },
+  "failed_deployments": [
+    {
+      "name": "audit",
+      "tx_hash": "0x40bc07706adce16df5209ad83d4b0536ac01f4889e5d548acee1270ef2b89e10",
+      "code_sha256": "f5c0e643ea234eed36e157ed219d8a3210581d4ebac7abf4d5c0f64554ebe755",
+      "args": [
+        "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c",
+        1000000000000000
+      ],
+      "status": 7,
+      "execution": [
+        "ERROR",
+        "ERROR"
+      ]
+    },
+    {
+      "name": "audit",
+      "tx_hash": "0x6f438c857075cb823202dfab6465726e2c02ec4fd98934a958dd23b3d66a25d6",
+      "code_sha256": "853d9a24891cb3141646c2cc9e78e66dea473928598ea33d9ef0a2d0e39060dd",
+      "args": [
+        "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c",
+        1000000000000000
+      ],
+      "status": 7,
+      "execution": [
+        "ERROR",
+        "ERROR"
+      ]
+    }
+  ]
+}

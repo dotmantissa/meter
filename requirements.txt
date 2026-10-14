@@ -1,5 +1,6 @@
 genlayer-test==0.29.2
 genvm-linter==0.11.0
 pypdf==6.10.2
-pytest==9.0.2
+pytest==9.1.1
 python-dotenv==1.2.2
+python-minifier==3.2.0

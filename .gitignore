@@ -16,3 +16,4 @@ artifacts/
 .openai/local*
 .deps/
 *.tsbuildinfo
+.contract-build/
