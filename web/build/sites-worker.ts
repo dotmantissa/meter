@@ -4,6 +4,10 @@ import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 
 export default {
   fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+    // Runtime bindings come from hosting, never from a client build constant.
+    for (const [name, value] of Object.entries(env)) {
+      if (typeof value === "string") process.env[name] = value;
+    }
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and
     // the auxiliary service binding are absent from production builds.
