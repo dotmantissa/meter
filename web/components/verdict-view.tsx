@@ -1,0 +1,51 @@
+'use client';
+import { useState } from 'react';
+import { CircleCheck, AlertCircle, LoaderCircle, Download, Share2, RefreshCw, ExternalLink, LockKeyhole, Copy, Printer, ReceiptText, CircleHelp } from 'lucide-react';
+import { money, type AuditRecord } from '@/lib/facts';
+import { api } from '@/lib/client-api';
+const titles = { MATCH: 'These base charges add up.', OVERCHARGE: 'There’s a difference worth asking about.', UNDERCHARGE: 'The base charges came in lower.', RATE_CLASS: 'That rate class deserves a closer look.', INSUFFICIENT_EVIDENCE: 'We need a little more evidence.' };
+export function VerdictView({ record, onRefresh, token, publicView = false }: { record: AuditRecord; onRefresh?: (r: AuditRecord) => void; token?: () => Promise<string | null>; publicView?: boolean }) {
+  const [message, setMessage] = useState(''); const [working, setWorking] = useState(false);
+  const [claim, setClaim] = useState<{ status: string; deposit_wei?: number } | null>(null);
+  const v = record.verdict; const finalized = record.status === 'FINALIZED';
+  async function preference(key: 'public' | 'recurring', value: boolean) {
+    if (!token) return; setWorking(true); setMessage('');
+    try {
+      await api(`/api/audits/${record.id}`, await token(), { method: 'PATCH', body: JSON.stringify({ [key]: value }) });
+      onRefresh?.({ ...record, [key]: value });
+      setMessage(key === 'public' ? value ? 'Sharing is on. Anyone with the link can read the facts and verdict.' : 'The public page is now closed. Contract data remains public.' : value ? 'Monthly source checks are on. Upload your new bill when it arrives.' : 'Monthly checks are off.');
+    } catch (e) { setMessage((e as Error).message); } finally { setWorking(false); }
+  }
+  async function action(path: string, method = 'POST') {
+    if (!token) return; setWorking(true); setMessage('');
+    try {
+      await api(`/api/audits/${record.id}/${path}`, await token(), { method });
+      onRefresh?.({ ...record, status: 'PENDING' }); setMessage('Submitted. We’ll show the result when the network finishes.');
+    } catch (e) { setMessage((e as Error).message); } finally { setWorking(false); }
+  }
+  async function inspectClaim() {
+    if (!token) return; setWorking(true);
+    try { setClaim(await api(`/api/audits/${record.id}/recovery`, await token())); } catch (e) { setMessage((e as Error).message); } finally { setWorking(false); }
+  }
+  async function copy() {
+    try { await navigator.clipboard.writeText(new URL(`/verdict/${record.id}`, location.origin).href); setMessage('Link copied.'); } catch { setMessage('Copy the verdict address from the link below.'); }
+  }
+  function download() {
+    const blob = new Blob([JSON.stringify({ network: 'GenLayer Studio', contract_receipt: record.tx_hash, status: record.status, verdict: v }, null, 2)], { type: 'application/json' });
+    const href = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = href; anchor.download = `meter-verdict-${record.id.slice(0, 12)}.json`; anchor.click(); URL.revokeObjectURL(href);
+  }
+  return <div className="verdict-view">
+    {!finalized && <div className={record.status === 'FAILED' ? 'verdict-pending failed' : 'verdict-pending'} role="status">{record.status === 'FAILED' ? <AlertCircle size={29}/> : record.status === 'RECEIPT_UNAVAILABLE' ? <CircleHelp size={29}/> : <LoaderCircle className="spin" size={29}/>}<h3>{record.status === 'FAILED' ? 'This review couldn’t finish.' : record.status === 'RECEIPT_UNAVAILABLE' ? 'The result is visible. Its receipt needs reconciling.' : 'A proper review takes a moment.'}</h3><p>{record.status === 'FAILED' ? 'The network did not produce a successful verdict. Check the tariff period and source availability before starting a new review.' : record.status === 'RECEIPT_UNAVAILABLE' ? 'We found the contract record after an interrupted submission. We cannot label it finalized without its transaction receipt.' : 'Validators are reading the tariff and checking your numbers. Your review is saved, so there’s no need to keep this tab open.'}</p><span className="transaction-state">{record.status.replaceAll('_', ' ').toLowerCase()}</span></div>}
+    {v && <><div className="verdict-heading"><span className="verdict-symbol">{v.classification === 'MATCH' ? <CircleCheck size={30}/> : v.classification === 'INSUFFICIENT_EVIDENCE' ? <CircleHelp size={30}/> : <ReceiptText size={30}/>}</span><div><span className="verdict-meta">{finalized ? 'Independent verdict' : 'Contract record'} · Revision {v.revision}</span><h3>{titles[v.classification]}</h3></div></div><p className="verdict-scope">This review covers base customer and energy charges only. Riders, taxes, special plans, and previous balances are outside this verdict.</p>
+    {v.classification !== 'INSUFFICIENT_EVIDENCE' ? <div className="reconciliation"><div><span>Base charges on your bill</span><strong>{money(v.billed_cents)}</strong></div><div><span>Recomputed from the tariff</span><strong>{money(v.expected_cents)}</strong></div><div className="reconciliation-difference"><span>{v.difference_cents > 0 ? 'Amount to question' : v.difference_cents < 0 ? 'Billed below the tariff' : 'Difference'}</span><strong>{money(Math.abs(v.difference_cents))}</strong></div></div> : <p className="form-note">The documents did not establish every rule needed for a safe calculation. This does not mean your bill is correct. Extraction reason: {v.parameters.reason_code.toLowerCase().replaceAll('_', ' ')}.</p>}
+    <details className="evidence"><summary>Show the working and evidence</summary><div className="evidence-body"><dl><div><dt>Usage</dt><dd>{(v.facts.usage_wh / 1000).toLocaleString()} kWh</dd></div><div><dt>Bill period</dt><dd>{v.facts.period_start} to {v.facts.period_end}</dd></div><div><dt>Rate class claimed</dt><dd>{v.facts.rate_class}</dd></div><div><dt>Rate class required</dt><dd>{v.parameters.required_class}</dd></div><div><dt>Customer charge</dt><dd>{money(v.customer_cents)}</dd></div><div><dt>Energy charge</dt><dd>{money(v.energy_cents)}</dd></div></dl>{v.parameters.tiers.map((t, i) => <div className="tier-line" key={i}><span>{t.up_to_wh === 0 ? 'Remaining usage' : `Through ${(t.up_to_wh / 1000).toLocaleString()} kWh`}</span><code>${(t.micro_usd_per_kwh / 1_000_000).toFixed(6)} / kWh</code></div>)}<div className="source-links"><a href={v.tariff.source_url} target="_blank" rel="noreferrer">Utility tariff <ExternalLink size={13}/></a><a href={v.tariff.regulator_url} target="_blank" rel="noreferrer">Filed copy <ExternalLink size={13}/></a><a href={v.tariff.order_url} target="_blank" rel="noreferrer">Approval record <ExternalLink size={13}/></a></div><p className="hash-label">Original bill fingerprint<code>{v.facts.bill_hash}</code></p><p className="hash-label">Tariff fingerprint<code>{v.tariff.content_hash}</code></p><p>The verdict records the facts provided by the bill owner. A document fingerprint commits to the original; it does not prove those facts were entered correctly.</p></div></details>
+    {v.corrected && <p className="correction-note"><RefreshCw size={16}/> The result changed from {v.previous_classification?.toLowerCase().replaceAll('_', ' ')}. This correction is part of the record.</p>}
+    <div className="verdict-actions"><button className="button quiet small" onClick={download}><Download size={15}/> Download record</button><button className="button quiet small" onClick={() => window.print()}><Printer size={15}/> Print verdict</button></div>
+    {finalized && !publicView && <div className="verdict-settings"><label className="check-label"><input type="checkbox" checked={record.public} disabled={working} onChange={e => void preference('public', e.target.checked)}/><span><strong>Make a shareable page</strong><small>Anyone with the link can see your usage, dates, and verdict. Your PDF stays private.</small></span></label>{record.public && <div className="share-row"><a href={`/verdict/${record.id}`}><Share2 size={15}/> Open public verdict</a><button className="icon-button" onClick={copy} aria-label="Copy verdict link"><Copy size={16}/></button></div>}<label className="check-label"><input type="checkbox" checked={record.recurring} disabled={working} onChange={e => void preference('recurring', e.target.checked)}/><span><strong>Keep an eye on this tariff</strong><small>Check sources and recheck these facts monthly. A new bill still needs your review.</small></span></label><div className="appeal-box"><h4>Something doesn’t look right?</h4><p>A recheck posts a 0.001 Studio GEN bond. A corrected result refunds it. Studio tokens have no stated dollar value.</p><button className="button quiet small" disabled={working || !!v.appealed} onClick={() => void action('appeal')}><RefreshCw size={15}/>{v.appealed ? 'Recheck recorded' : 'Request a bonded recheck'}</button></div>{v.difference_cents >= 1000 && ['OVERCHARGE', 'RATE_CLASS'].includes(v.classification) && <div className="appeal-box"><h4>Keep a recovery claim on the record.</h4><p>The success fee escrow holds 0.001 Studio GEN. A recovery operator records an actual utility credit before a fee can be released. This is a test network escrow, with no cash advance.</p><button className="button quiet small" disabled={working} onClick={() => void action('recovery')}>Open fee escrow</button><button className="button quiet small" disabled={working} onClick={inspectClaim}>Check claim</button>{claim && <p>Claim status: {claim.status.toLowerCase()}{claim.status === 'OPEN' && <button className="text-button" disabled={working} onClick={() => void action('recovery','DELETE')}>Cancel and refund</button>}</p>}</div>}</div>}
+    </>}
+    {record.source_changed && <p className="feedback error"><AlertCircle size={17}/> The tariff source changed after this review. The earlier evidence fingerprint remains in your record.</p>}
+    {message && <p className="action-message" role="status">{message}</p>}
+    {record.tx_hash && <a className="receipt-link" href={`https://explorer-studio.genlayer.com/tx/${record.operation_tx || record.tx_hash}`} target="_blank" rel="noreferrer">View the Studio transaction <ExternalLink size={13}/></a>}
+    <p className="commitment-note"><LockKeyhole size={14}/> Your original PDF was never part of this record.</p>
+  </div>;
+}
