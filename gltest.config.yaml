@@ -1,0 +1,12 @@
+paths:
+  contracts: contracts/
+  artifacts: .test-artifacts/
+environment: .env
+networks:
+  default: studionet
+  studionet:
+    from: "${GENLAYER_PRIVATE_KEY}"
+    accounts:
+      - "${GENLAYER_PRIVATE_KEY}"
+    leader_only: false
+    default_wait_interval: 20000

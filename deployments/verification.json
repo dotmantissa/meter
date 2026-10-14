@@ -1,0 +1,66 @@
+{
+  "network": "studionet",
+  "chain_id": 61999,
+  "fixture_tariff": "avista.1.selftest",
+  "fixture_is_customer_data": false,
+  "audit": {
+    "audit_id": "50462d2df6b9796fed7b5b8935152b6169c332416ed4c35d7bb796db60d2403e",
+    "audit_tx": "0x8f040478f372f42be00318b847329f2b3772ac6443f6f4a87bcc7a42ccddaed3",
+    "recheck_tx": "0xa5f5e4dc90fc898a3d1d5433be5c5f28e40df0bb237b9229b60f89bdff70a033",
+    "audit_verified": true,
+    "recheck_verified": true,
+    "pool_verified": true,
+    "consensus_votes": {
+      "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb": "agree",
+      "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC": "idle",
+      "0x9ea87b28DcA2F79fe108CF06a4c13B4c876AC23d": "agree",
+      "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "disagree",
+      "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658": "agree"
+    }
+  },
+  "escrow": {
+    "audit_id": "32b0ab76552df6a02509991fc2d75b9fcf0b7992e5956c0b473e993a80fe829d",
+    "audit_tx": "0xf584f08eef13a1f651cd686bbaecbc3ed2e36496eacd3fc2dd23ee9869156a43",
+    "open_tx": "0x9a44f76cc3647a3c9586775e77913539561e49d8d933ec19ed29c7b73dce5a31",
+    "cancel_tx": "0x4c9db484176a9126e18d573082f4e2a4fc42ab4d7924c33c580b6d6a6ce35acb",
+    "appeal_tx": "0x94596f04a24fff9b9fc40585a433308ec2d059fb2f2c1c1bb698bb9120f49680",
+    "triggered_transactions": [
+      "0x75de21890b522726d7385d75d2acafef5e43963852166e0bd49af4cfbe8a8391"
+    ],
+    "balance_before_open": "800218500919583967419",
+    "balance_after_refund": "800218500919583967419",
+    "deposit_verified": true,
+    "refund_verified": true,
+    "appeal_verified": true
+  },
+  "worker": {
+    "run_id": "4e45af25-c88d-4136-8b4a-c118cb320b87",
+    "write_verified": true,
+    "readback_verified": true,
+    "due_customer_reviews": 0
+  },
+  "hosting": {
+    "url": "https://meter-bill-review.candidtuna3.chatgpt.site",
+    "version": 3,
+    "source_commit": "a14045562541cce1093b3a39126af61deabf5599",
+    "deployment_id": "appgdep_6acfae0c5b748191acb5a0498788d001",
+    "status": "succeeded"
+  },
+  "automation": {
+    "id": "Automation_4b813f0256bc8191ac2361ddc16947da",
+    "enabled": true,
+    "timezone": "Africa/Lagos",
+    "queue_cadence": "hourly",
+    "review_cadence": "monthly with consent"
+  },
+  "checks": {
+    "contract_direct_tests": 35,
+    "studio_integration_tests": 3,
+    "web_privacy_tests": 7,
+    "genvm_lint_contracts": 3,
+    "frontend_lint": "passed",
+    "frontend_typecheck": "passed",
+    "production_build": "passed",
+    "hosted_browser": "passed"
+  }
+}
