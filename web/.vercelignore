@@ -1,0 +1,16 @@
+.env
+.env.*
+.dev.vars*
+.openai/local*
+.sites-runtime
+.wrangler
+.vinext
+.next
+dist
+node_modules
+coverage
+*.log
+*.tsbuildinfo
+TASKS.md
+AGENT.md
+AGENTS.md

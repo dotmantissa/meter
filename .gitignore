@@ -18,3 +18,4 @@ artifacts/
 *.tsbuildinfo
 .contract-build/
 .test-artifacts/
+.vercel/
