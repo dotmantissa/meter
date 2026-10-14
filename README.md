@@ -2,7 +2,7 @@
 
 The utility owns the meter, reads the meter, and writes the bill. Meter gives you a second pair of eyes.
 
-[Open Meter](https://meter-bill-review.candidtuna3.chatgpt.site)
+[Open Meter](https://meter-audit.vercel.app)
 
 Bring a PDF electricity bill. Meter reads it in your browser, lets you check the numbers, and asks independent GenLayer validators to compare them with the published tariff. The answer keeps its working and the fingerprints of its evidence. You can print it, download it, or share a verdict page with your utility.
 
@@ -53,6 +53,13 @@ npm --prefix web run dev
 
 The web app uses Next.js App Router components and routes, with Vinext for the Sites Worker runtime. Its production build preserves the hosting adapter. Fonts and the PDF worker are served with the app. The logo is an original vector drawing of a meter with an independent needle.
 
+Vercel runs the same app through native Next.js. Its project root is `web`, Node is pinned to version 22, and `web/vercel.json` selects `npm run build:vercel`. Keep the database, Privy secret, operator key, stable user signing seed, worker credential, and contract addresses in production environment settings. The upload rules exclude local credentials, tool state, and the recovery checklist.
+
+```sh
+npm --prefix web run build:vercel
+npm --prefix web run start:vercel
+```
+
 ```sh
 npm --prefix web run lint
 npm --prefix web run typecheck
@@ -80,8 +87,10 @@ The live audit script uses an explicitly separate test tariff. Its synthetic tes
 
 Monthly checks require consent. The worker refreshes source fingerprints, waits for a successful finalized refresh, and rechecks the anonymous facts already provided. It never invents the next month’s usage. Upload the next bill when it arrives.
 
-The worker keeps leases, submission receipts, and recovery states in Neon. An uncertain broadcast is not blindly repeated. Source changes stay visible in saved reviews. The hosted owner tool runs the worker. The protected HTTP endpoint supports a Site service access credential or a separate worker credential, both held in the hosting secret store. Its status endpoint reads the latest saved run. An enabled Sites task checks the queue hourly in Africa/Lagos time; each consenting review becomes due monthly.
+The worker keeps leases, submission receipts, and recovery states in Neon. An uncertain broadcast is not blindly repeated. Source changes stay visible in saved reviews. The hosted owner tool runs the worker. The protected HTTP endpoint supports a Site service access credential or a separate worker credential, both held in the hosting secret store. Its status endpoint reads the latest saved run. An enabled Sites task checks the queue hourly in Africa/Lagos time; each consenting review becomes due monthly. That task continues through the existing Sites service, sharing the same database and signing seed as the Vercel app.
 
 Public aggregate counts come from contract state and identify the reviewed scope. They count submitted facts, including direct contract submissions. They are not proof that a utility committed misconduct.
 
 Deployment addresses, source fingerprints, and transaction receipts are in [deployments/studio.json](deployments/studio.json). The implementation boundary is described in [docs/architecture.md](docs/architecture.md), and the checked results are in [docs/verification.md](docs/verification.md).
+
+The Vercel deployment and alias are recorded in [deployments/vercel.json](deployments/vercel.json). The [Sites deployment](https://meter-bill-review.candidtuna3.chatgpt.site) remains available.

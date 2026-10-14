@@ -17,3 +17,11 @@ Anonymous calls to saved review and worker endpoints returned 401. The worker wa
 The linked task `Automation_4b813f0256bc8191ac2361ddc16947da` is enabled hourly in Africa/Lagos time. Per review consent and monthly due dates determine what the worker processes. The task was saved and the writer was exercised independently; no claim is made that the first scheduled occurrence has run.
 
 Tracked source, new source files and the final production archive were scanned against the supplied credentials and generated signing and worker secrets. No matches were found. Runtime configuration stays in ignored files or the hosting secret store. The recovery checklist and agent instructions are ignored, and Git history is checked for the sole requested author.
+
+## Vercel
+
+The native Next.js deployment is available at https://meter-audit.vercel.app. It uses Node 22, the `web` project root, and a dedicated TypeScript configuration for application sources. The build, type check, frontend lint, and seven privacy tests passed. The hosted browser check repeated desktop, mobile, theme, navigation, email modal, and local PDF privacy checks with no page errors or failed assets.
+
+The live tariff endpoint returned three indexed records. Health returned the current Studio contract addresses and read the linked escrow pool. Anonymous review and worker requests returned 401. Authorized worker status returned a completed saved run from the shared Neon database. The existing Sites task continues to process that same queue.
+
+All nine production configuration values were stored as sensitive Vercel environment entries. The upload list and native browser bundle passed credential scans. No credentials were supplied as command arguments. The first remote build exposed a shared type check referencing an excluded Sites helper; the corrected deployment passed with the application scope. Deployment identifiers and public check results are in [deployments/vercel.json](../deployments/vercel.json).
