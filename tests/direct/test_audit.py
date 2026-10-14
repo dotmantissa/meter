@@ -100,3 +100,8 @@ def test_corrected_appeal_uses_native_evm_transfer(audit,audit_module,direct_vm,
     direct_vm.value=100;audit.appeal(i)
     assert audit.get_verdict(i)['corrected']
     assert transfers[-1][1]=={'value':100}
+
+@pytest.mark.parametrize('dates',[('','9999-12-31'),('2026-02-30','9999-12-31'),('2026-01-29','later'),('2026-02-01','2026-01-01')])
+def test_extracted_dates_must_be_canonical(audit_module,direct_vm,params,dates):
+    with direct_vm.expect_revert('Invalid extracted effective dates'):
+        audit_module.normalize_parameters({**params,'effective_from':dates[0],'effective_to':dates[1]})

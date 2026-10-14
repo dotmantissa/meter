@@ -84,6 +84,16 @@ def normalize_parameters(raw):
     for k in ('schedule_id', 'required_class', 'effective_from', 'effective_to'):
         if not isinstance(raw[k], str) or len(raw[k]) > 80:
             raise gl.vm.UserError('[LLM_ERROR] Invalid extracted identifier')
+    if raw['supported']:
+        try:
+            start = date.fromisoformat(raw['effective_from'])
+            end = date.fromisoformat(raw['effective_to'])
+            if start.isoformat() != raw['effective_from'] or end.isoformat() != raw['effective_to'] or start > end:
+                raise ValueError()
+        except ValueError:
+            raise gl.vm.UserError('[LLM_ERROR] Invalid extracted effective dates')
+        if raw['reason_code'] != 'SUPPORTED' or not raw['required_class']:
+            raise gl.vm.UserError('[LLM_ERROR] Supported extraction needs a class and supported reason')
     if type(raw['basic_micro_usd']) is not int or not 0 <= raw['basic_micro_usd'] <= 1000000000:
         raise gl.vm.UserError('[LLM_ERROR] Invalid basic charge')
     tiers = raw['tiers']
