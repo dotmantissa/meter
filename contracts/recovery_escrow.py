@@ -3,6 +3,14 @@ from genlayer import *
 import json
 
 
+@gl.evm.contract_interface
+class NativeRecipient:
+    class View:
+        pass
+    class Write:
+        pass
+
+
 class RecoveryEscrow(gl.Contract):
     audit: Address
     operator: Address
@@ -59,7 +67,7 @@ class RecoveryEscrow(gl.Contract):
         self.deposits[audit_id] = u256(0)
         self.total_locked = u256(self.total_locked - deposit)
         payee = self.operator if recovered_cents > 0 else self.beneficiaries[audit_id]
-        gl.get_contract_at(payee).emit_transfer(value=deposit, on='finalized')
+        NativeRecipient(payee).emit_transfer(value=deposit)
 
     @gl.public.write
     def cancel(self, audit_id: str) -> None:
@@ -73,7 +81,7 @@ class RecoveryEscrow(gl.Contract):
         self.claims[audit_id] = json.dumps(c)
         self.deposits[audit_id] = u256(0)
         self.total_locked = u256(self.total_locked-deposit)
-        gl.get_contract_at(gl.message.sender_address).emit_transfer(value=deposit, on='finalized')
+        NativeRecipient(gl.message.sender_address).emit_transfer(value=deposit)
 
     @gl.public.view
     def get_claim(self, audit_id: str) -> dict:

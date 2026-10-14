@@ -7,6 +7,14 @@ import json
 from pypdf import PdfReader
 
 
+@gl.evm.contract_interface
+class NativeRecipient:
+    class View:
+        pass
+    class Write:
+        pass
+
+
 FIELDS = {'tariff_id', 'rate_class', 'period_start', 'period_end', 'usage_wh',
           'customer_cents', 'energy_cents', 'bill_hash', 'phase', 'dwelling'}
 
@@ -239,7 +247,7 @@ class MeterAudit(gl.Contract):
         self.counts[prefix+previous['classification']] = u256(self.counts[prefix+previous['classification']]-1)
         self.counts[prefix+result['classification']] = u256(self.counts.get(prefix+result['classification'], u256(0))+1)
         if result['corrected'] and self.appeal_bond > 0:
-            gl.get_contract_at(gl.message.sender_address).emit_transfer(value=self.appeal_bond, on='finalized')
+            NativeRecipient(gl.message.sender_address).emit_transfer(value=self.appeal_bond)
 
     @gl.public.view
     def get_verdict(self, audit_id: str) -> dict:

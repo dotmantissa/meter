@@ -11,6 +11,7 @@ def escrow(direct_vm,direct_deploy,direct_owner,monkeypatch):
     def proxy(address):
         return SimpleNamespace(view=lambda:SimpleNamespace(get_owner=lambda i:module.Address(direct_owner.as_bytes if hasattr(direct_owner, "as_bytes") else direct_owner),get_verdict=lambda i:verdict),emit_transfer=lambda **kw:transfers.append((address,kw)))
     monkeypatch.setattr(module.gl,'get_contract_at',proxy)
+    monkeypatch.setattr(module,'NativeRecipient',lambda address:SimpleNamespace(emit_transfer=lambda **kw:transfers.append((address,kw))))
     return e,verdict,transfers
 
 
@@ -24,7 +25,7 @@ def test_value_backed_open_and_success(escrow,direct_vm):
     direct_vm.value=0;e.resolve('bill',2500)
     assert e.get_claim('bill')['status']=='RECOVERED'
     assert e.get_pool()['locked_wei']==0
-    assert transfers[-1][1]=={'value':123,'on':'finalized'}
+    assert transfers[-1][1]=={'value':123}
     with direct_vm.expect_revert('already settled'):e.resolve('bill',2500)
 
 

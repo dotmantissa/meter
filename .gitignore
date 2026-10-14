@@ -17,3 +17,4 @@ artifacts/
 .deps/
 *.tsbuildinfo
 .contract-build/
+.test-artifacts/

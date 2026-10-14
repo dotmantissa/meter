@@ -89,3 +89,14 @@ def test_error_comparison_never_agrees_on_bad_model(audit_module):
     assert audit_module.compare_error(gl.vm.UserError('[EXPECTED] dates'),fail('[EXPECTED] dates'))
     assert not audit_module.compare_error(gl.vm.UserError('[LLM_ERROR] bad'),fail('[LLM_ERROR] bad'))
     assert not audit_module.compare_error(gl.vm.UserError('[EXPECTED] dates'),lambda: {})
+
+def test_corrected_appeal_uses_native_evm_transfer(audit,audit_module,direct_vm,facts,params,monkeypatch):
+    from types import SimpleNamespace
+    i=audit.audit_bill(json.dumps(facts))
+    direct_vm.clear_mocks()
+    direct_vm.mock_llm(r'Extract Meter.*',json.dumps({**params,'basic_micro_usd':7990000}))
+    transfers=[]
+    monkeypatch.setattr(audit_module,'NativeRecipient',lambda address:SimpleNamespace(emit_transfer=lambda **kw:transfers.append((address,kw))))
+    direct_vm.value=100;audit.appeal(i)
+    assert audit.get_verdict(i)['corrected']
+    assert transfers[-1][1]=={'value':100}
