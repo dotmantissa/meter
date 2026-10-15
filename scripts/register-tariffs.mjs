@@ -42,7 +42,7 @@ for(const tariff of catalog){
  }
  if(entry.status!=='VERIFIED'){
   const tx=await receipt(entry.tx_hash);
-  if(!tx.consensus_data?.leader_receipt?.some(r=>r.execution_result==='SUCCESS')){
+  if(!(tx.consensus_data?.leader_receipt?.[0]?.execution_result==='SUCCESS')){
    entry.status='FAILED';persist();console.log({tariff:tariff.id,result:tx.consensus_data?.leader_receipt?.map(r=>({execution:r.execution_result,result:r.result}))});throw new Error('Registration did not execute successfully');
   }
   entry.status='VERIFIED';persist();

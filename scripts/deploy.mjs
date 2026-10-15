@@ -10,7 +10,7 @@ const path = 'deployments/studio.json';
 const manifest = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : { network: 'studionet', chain_id: 61999, rpc: 'https://studio.genlayer.com/api', deployer: client.account.address, contracts: {}, operations: {} };
 function persist() { writeFileSync(path + '.tmp', JSON.stringify(manifest, null, 2)+'\n'); renameSync(path+'.tmp',path); }
 function success(tx) {
-  return tx.txExecutionResultName === 'SUCCESS' || tx.consensus_data?.leader_receipt?.some(r => r.execution_result === 'SUCCESS');
+  return tx.consensus_data?.leader_receipt?.[0]?.execution_result === 'SUCCESS';
 }
 for (const [name, file, args] of [
   ['registry','contracts/tariff_registry.py',[]],
@@ -21,7 +21,7 @@ for (const [name, file, args] of [
   let entry = manifest.contracts[name];
   if (entry && entry.code_sha256 !== digest) throw new Error('Local code changed since deployment: '+name+'. Reconcile the manifest before replacing it.');
   if (!entry) {
-    const actualArgs = args ?? (name === 'audit' ? [manifest.contracts.registry.address, 1000000000000000] : [manifest.contracts.audit.address, 1000]);
+    const actualArgs = args ?? (name === 'audit' ? [manifest.contracts.registry.address, 1000000000000000, manifest.legacy_audit || ''] : [manifest.contracts.audit.address, 1000]);
     let hash;
     while (!hash) {
       try { hash = await client.deployContract({ code: new Uint8Array(code), args: actualArgs, leaderOnly: false }); }
@@ -46,4 +46,13 @@ for (const [name, file, args] of [
   }
   console.log(JSON.stringify({name,address:entry.address,status:entry.status,execution:entry.execution}));
 }
-console.log('All three deployed contracts have readable schemas.');
+if (!manifest.operations.link_escrow) {
+  const hash=await client.writeContract({address:manifest.contracts.audit.address,functionName:'set_escrow',args:[manifest.contracts.escrow.address],value:0n,leaderOnly:false});
+  manifest.operations.link_escrow={tx_hash:hash,status:'SUBMITTED'};persist();
+}
+if(manifest.operations.link_escrow.status!=='VERIFIED') {
+  const tx=await client.waitForTransactionReceipt({hash:manifest.operations.link_escrow.tx_hash,status:TransactionStatus.FINALIZED,interval:20000,retries:100});
+  if(!success(tx))throw new Error('Escrow link failed');
+  manifest.operations.link_escrow.status='VERIFIED';persist();
+}
+console.log('All three deployed contracts have readable schemas and finalized escrow linkage.');

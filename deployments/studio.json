@@ -5,35 +5,36 @@
   "deployer": "0xBC1399c55538eC034d4Da550C03c34Ae0C357f53",
   "contracts": {
     "registry": {
-      "tx_hash": "0x38e15896e23a741fe77ca459f9fc9308f2f4bc229439854648e88f6826ee89eb",
-      "code_sha256": "7fb7e73aa9143086d450975876b3cadc2e5bedbf182d8a90273dc3d14580ba8f",
+      "tx_hash": "0xfd980167203f6041780cd0058480767998a997ac1fcb111eb177db1d3189bc52",
+      "code_sha256": "8d5c170a72daa70a7d85d070c8f89bc7b720ba6d8099f00ae9c2545a7e3e33c6",
       "args": [],
       "status": 7,
       "execution": [
         "SUCCESS",
         "ERROR"
       ],
-      "address": "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c"
+      "address": "0x9AB84641Bd2Ac9D3339e06D527D16aa28002b583"
     },
     "audit": {
-      "tx_hash": "0xef6e57b62650d0e26b4b6298dee5c98e58e4cc854f896a61a8218ae8a76c65ad",
-      "code_sha256": "445da13c35f90b1bbed9916d26c078277f27cb479e255a303ff305cfc7ebc1f5",
+      "tx_hash": "0xafee44ad8759b0fd34d7ecb0f188fc77380716871e3d02ba0cc578c855f0efdf",
+      "code_sha256": "cf2655543713b0ec895778c4ea568b7edf056a13b29be6600ef16ad3c4620d86",
       "args": [
-        "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c",
-        1000000000000000
+        "0x9AB84641Bd2Ac9D3339e06D527D16aa28002b583",
+        1000000000000000,
+        "0x50FF44E251eAEea0269A98B595e9E6F5e3249339"
       ],
       "status": 7,
       "execution": [
         "SUCCESS",
         "SUCCESS"
       ],
-      "address": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339"
+      "address": "0x9077C2280D6D3391967f68111ff8CbF16f94Ee96"
     },
     "escrow": {
-      "tx_hash": "0x9ea937de26018a81c9b2dae7b0968720bfb62a507934ad1445fa9f499d6d745c",
-      "code_sha256": "25574c520ccc7ed0970c23cc23a538c7511a2d7c3b069bb8f558f61af51ef6fc",
+      "tx_hash": "0xfbb1952af7b88496dea489d121e6d06e292a83e15be48596488748cc259d075b",
+      "code_sha256": "7b3f077051a14eb40689b86bbd23c1a67de9d928210314456a4014fb9046e442",
       "args": [
-        "0x50FF44E251eAEea0269A98B595e9E6F5e3249339",
+        "0x9077C2280D6D3391967f68111ff8CbF16f94Ee96",
         1000
       ],
       "status": 7,
@@ -41,20 +42,24 @@
         "SUCCESS",
         "SUCCESS"
       ],
-      "address": "0x8B5F125286114A389fFb3A0f35ff1dC0F6C28469"
+      "address": "0xACc7E675bBd314C16DFaC0A319CBFF2DD2d262b4"
     }
   },
   "operations": {
     "register:pse.7.2026": {
-      "tx_hash": "0xa515092e4eebfe0aabe41b45a3e35f83c575ea22281f0fb41379bfa26c5578bd",
+      "tx_hash": "0x886ae7141cb08031eb704c38d369f525f53c559e47e6dc77aa31073cde3112d6",
       "status": "VERIFIED"
     },
     "register:avista.1.2026": {
-      "tx_hash": "0xb9f95c3d95ba86c3cbc4e57989856fe12fef3ab2b1570182d37fa1696c5847f9",
+      "tx_hash": "0xf23f505cde00af0a5c7bbad01de05e8f898f3731587ec0ef80f610d4dba8f00d",
       "status": "VERIFIED"
     },
     "register:pacific.16.2026": {
-      "tx_hash": "0x913683e2f7adbe85d5eee226629ee82ec7dab1374e48b60f0e359c3a9757dd4d",
+      "tx_hash": "0x3f8991364390451ed0de364d573d158b7d1a82c849e7cafab08935dbd48cbe62",
+      "status": "VERIFIED"
+    },
+    "link_escrow": {
+      "tx_hash": "0x63d36cf27f3019b4f87d84fc3ce04ae29192f3d270e89df7da185dee873e7f1a",
       "status": "VERIFIED"
     }
   },
@@ -849,6 +854,106 @@
         ],
         "address": "0xf34bb267185539395173fcED2f436FC87Cd8E656"
       }
+    },
+    {
+      "reason": "Reviewer remediation: immutable evidence, revision ledger, material settlement and challenge policy",
+      "contracts": {
+        "registry": {
+          "tx_hash": "0x38e15896e23a741fe77ca459f9fc9308f2f4bc229439854648e88f6826ee89eb",
+          "code_sha256": "7fb7e73aa9143086d450975876b3cadc2e5bedbf182d8a90273dc3d14580ba8f",
+          "args": [],
+          "status": 7,
+          "execution": [
+            "SUCCESS",
+            "ERROR"
+          ],
+          "address": "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c"
+        },
+        "audit": {
+          "tx_hash": "0xef6e57b62650d0e26b4b6298dee5c98e58e4cc854f896a61a8218ae8a76c65ad",
+          "code_sha256": "445da13c35f90b1bbed9916d26c078277f27cb479e255a303ff305cfc7ebc1f5",
+          "args": [
+            "0x3a742eb2A1e8559b54adB5A9edD24d1FBdb5393c",
+            1000000000000000
+          ],
+          "status": 7,
+          "execution": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "address": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339"
+        },
+        "escrow": {
+          "tx_hash": "0x9ea937de26018a81c9b2dae7b0968720bfb62a507934ad1445fa9f499d6d745c",
+          "code_sha256": "25574c520ccc7ed0970c23cc23a538c7511a2d7c3b069bb8f558f61af51ef6fc",
+          "args": [
+            "0x50FF44E251eAEea0269A98B595e9E6F5e3249339",
+            1000
+          ],
+          "status": 7,
+          "execution": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "address": "0x8B5F125286114A389fFb3A0f35ff1dC0F6C28469"
+        }
+      },
+      "operations": {
+        "register:pse.7.2026": {
+          "tx_hash": "0xa515092e4eebfe0aabe41b45a3e35f83c575ea22281f0fb41379bfa26c5578bd",
+          "status": "VERIFIED"
+        },
+        "register:avista.1.2026": {
+          "tx_hash": "0xb9f95c3d95ba86c3cbc4e57989856fe12fef3ab2b1570182d37fa1696c5847f9",
+          "status": "VERIFIED"
+        },
+        "register:pacific.16.2026": {
+          "tx_hash": "0x913683e2f7adbe85d5eee226629ee82ec7dab1374e48b60f0e359c3a9757dd4d",
+          "status": "VERIFIED"
+        }
+      }
+    },
+    {
+      "reason": "PSE full document inspection exposed AES dependency missing from the initial review bundle",
+      "contracts": {
+        "audit": {
+          "tx_hash": "0x0239dab2180f1d71cd2ae50cde342d9e5386c8a7552dd2e074bcf076fbedce02",
+          "code_sha256": "de63ac8346d9f0992e5ce0cd1d2311fb5480db8255b0aedb3ea76ac44d499ec1",
+          "args": [
+            "0x9AB84641Bd2Ac9D3339e06D527D16aa28002b583",
+            1000000000000000,
+            "0x50FF44E251eAEea0269A98B595e9E6F5e3249339"
+          ],
+          "status": 7,
+          "execution": [
+            "SUCCESS",
+            "SUCCESS"
+          ],
+          "address": "0xc6C03Fe9b59ca431028481d1D7B27213De0407AC"
+        },
+        "escrow": {
+          "tx_hash": "0xbcacc5f0033457f7965c60f855095fa0a982af881ab20ec2a02cd2fed77c601a",
+          "code_sha256": "7b3f077051a14eb40689b86bbd23c1a67de9d928210314456a4014fb9046e442",
+          "args": [
+            "0xc6C03Fe9b59ca431028481d1D7B27213De0407AC",
+            1000
+          ],
+          "status": 7,
+          "execution": [
+            "SUCCESS",
+            "ERROR"
+          ],
+          "address": "0xb79Aa8e90d208F41C247f273CaFFB87fA1Ae4F75"
+        }
+      },
+      "operations": {
+        "link_escrow": {
+          "tx_hash": "0xbad98f2ec43ded4a24cb846b406c0572c74fe105bb3e40b5e99e4c9ba88b5bff",
+          "status": "VERIFIED"
+        }
+      },
+      "failed_pdf_audit_tx": "0x9f01d1b44c47cd695dc3384c664c9747c5d9b3feb203a323ed11aa8d6a3a731a"
     }
-  ]
+  ],
+  "legacy_audit": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339"
 }
