@@ -14,7 +14,9 @@ export async function POST(request: Request) {
     { name: 'meter_worker_status', description: 'Read the most recent tariff check run and count queued consented reviews. Only the Site owner may read it.', inputSchema: { type: 'object', properties: {}, additionalProperties: false } },
   ] });
   if (input.method === 'tools/call') {
-    const owner = process.env.WORKER_OWNER_ID;
+    // This identity header is authenticated by Sites dispatch. Vercel has no
+    // such gateway, so its callers must use the secret protected worker API.
+    const owner = process.env.VERCEL ? undefined : process.env.WORKER_OWNER_ID;
     if (!owner || request.headers.get('oai-authenticated-user-id') !== owner) return result({ content: [{ type: 'text', text: 'Only the Meter Site owner can run this worker.' }], isError: true });
     const args = input.params?.arguments;
     if (args && (typeof args !== 'object' || Object.keys(args).length)) return result({ content: [{ type: 'text', text: 'This tool does not accept parameters.' }], isError: true });
