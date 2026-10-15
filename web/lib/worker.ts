@@ -30,13 +30,13 @@ export async function runWorker() {
             ON CONFLICT(tariff_id) DO UPDATE SET status='SUBMITTING',tx_hash=NULL,attempts=meter_source_jobs.attempts+1,
               error_code=NULL,lease_until=now()+interval '10 minutes',updated_at=now()
             WHERE (meter_source_jobs.status='FAILED' AND (meter_source_jobs.retry_at IS NULL OR meter_source_jobs.retry_at<=now()))
-              OR (meter_source_jobs.status='FINALIZED' AND meter_source_jobs.updated_at<now()-interval '1 day') RETURNING tariff_id`;
+              OR (meter_source_jobs.status='FINALIZED' AND meter_source_jobs.updated_at<now()-interval '1 day') RETURNING tariff_id,attempts`;
           if (lock.length) {
             try {
               const hash = await operator().writeContract({address:contracts.registry,functionName:'refresh',args:[tariffId],value:BigInt(0),leaderOnly:false});
-              await sql`UPDATE meter_source_jobs SET tx_hash=${hash},status='PENDING',lease_until=NULL,updated_at=now() WHERE tariff_id=${jobId} AND status='SUBMITTING'`;
+              await sql`UPDATE meter_source_jobs SET tx_hash=${hash},status='PENDING',lease_until=NULL,updated_at=now() WHERE tariff_id=${jobId} AND attempts=${lock[0].attempts} AND status IN ('SUBMITTING','UNCERTAIN') AND tx_hash IS NULL`;
             } catch {
-              await sql`UPDATE meter_source_jobs SET status='UNCERTAIN',error_code='SOURCE_BROADCAST_UNCERTAIN',lease_until=NULL,updated_at=now() WHERE tariff_id=${jobId} AND status='SUBMITTING'`;
+              await sql`UPDATE meter_source_jobs SET status='UNCERTAIN',error_code='SOURCE_BROADCAST_UNCERTAIN',lease_until=NULL,updated_at=now() WHERE tariff_id=${jobId} AND attempts=${lock[0].attempts} AND status='SUBMITTING' AND tx_hash IS NULL`;
             }
           }
           await sql`UPDATE meter_audits SET next_check_at=now()+interval '1 hour',lease_until=NULL WHERE id=${row.id}`;

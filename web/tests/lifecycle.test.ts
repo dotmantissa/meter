@@ -121,6 +121,12 @@ describe('hard sponsorship allowance',()=>{
  });
 });
 describe('shared source refresh terminal recovery',()=>{
+ it('retains a late known refresh hash after the submission lease was marked uncertain',async()=>{
+  await pg.exec("UPDATE meter_audits SET recurring=true,next_check_at=now()-interval '1 day'");
+  mocks.write.mockImplementation(async()=>{await pg.exec("UPDATE meter_source_jobs SET status='UNCERTAIN'");return 'late-refresh-tx';});
+  await runWorker();
+  expect((await pg.query<Record<string,unknown>>('SELECT status,tx_hash,attempts FROM meter_source_jobs')).rows[0]).toMatchObject({status:'PENDING',tx_hash:'late-refresh-tx',attempts:1});
+ });
  for(const state of ['FINALIZED','CANCELED','UNDETERMINED']) it('replaces a confirmed '+state+' failure after backoff',async()=>{
   await pg.exec("UPDATE meter_audits SET recurring=true,next_check_at=now()-interval '1 day'");
   const key=contracts.registry+':'+facts.tariff_id;
