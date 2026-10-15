@@ -1,6 +1,6 @@
 {
-  "id": "dpl_3zgKvMseQ5JkD16xanYx1BqC9q52",
-  "url": "meter-audit-gel5s03sg-mantissas-projects.vercel.app",
+  "id": "dpl_AFq91AYQ37ZBvM9YYTUkaVjh4dYW",
+  "url": "meter-audit-2yifo0viw-mantissas-projects.vercel.app",
   "readyState": "READY",
   "alias": [
     "meter-audit.vercel.app",
@@ -9,7 +9,7 @@
   "target": "production",
   "project_id": "prj_L1fdHrmGfo2ahs2l5RFTdV8KJiTC",
   "production_url": "https://meter-audit.vercel.app",
-  "application_commit": "ceab32cfc65d45c555be3127a50a84e14fdceece",
+  "application_commit": "045a371bd4da1905c9e8efd604b5000516d18158",
   "root_directory": "web",
   "node_version": "22.x",
   "framework": "nextjs",
@@ -44,7 +44,7 @@
       },
       "worker": {
         "status": 200,
-        "run_id": "05a075b1-569b-4463-a81c-bc81992a4859"
+        "run_id": "5f0641f6-6b48-4c4e-9937-fe6b318d7b86"
       },
       "forged_gateway_identity_rejected": true,
       "archive_content_hash": {
@@ -85,6 +85,14 @@
       "id": "dpl_4eYckCitB4Qs8u7RrPk34YvYvay2",
       "url": "meter-audit-18i1w2gg3-mantissas-projects.vercel.app",
       "application_commit": "1a0d93746e0736c8643c16c9909987950a6f7136"
+    },
+    {
+      "id": "dpl_3zgKvMseQ5JkD16xanYx1BqC9q52",
+      "url": "meter-audit-gel5s03sg-mantissas-projects.vercel.app",
+      "application_commit": "ceab32cfc65d45c555be3127a50a84e14fdceece"
     }
-  ]
+  ],
+  "application_tree_sha": "4f4a60be4daa805c4f39c23882786946a5a3d1d4",
+  "verified_at": "2026-10-15T15:32:37.746881+00:00",
+  "record_kind": "verified_application_release"
 }

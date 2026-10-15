@@ -498,7 +498,7 @@
     },
     "worker": {
       "status": 200,
-      "run_id": "05a075b1-569b-4463-a81c-bc81992a4859"
+      "run_id": "5f0641f6-6b48-4c4e-9937-fe6b318d7b86"
     },
     "forged_gateway_identity_rejected": true,
     "archive_content_hash": {
@@ -545,5 +545,21 @@
     "timezone": "Africa/Lagos",
     "queue_cadence": "hourly",
     "review_cadence": "consenting owners, contract gate of 30 days"
+  },
+  "vercel": {
+    "id": "dpl_AFq91AYQ37ZBvM9YYTUkaVjh4dYW",
+    "url": "meter-audit-2yifo0viw-mantissas-projects.vercel.app",
+    "application_commit": "045a371bd4da1905c9e8efd604b5000516d18158",
+    "application_tree_sha": "4f4a60be4daa805c4f39c23882786946a5a3d1d4",
+    "readyState": "READY",
+    "verified_at": "2026-10-15T15:32:37.746881+00:00"
+  },
+  "worker": {
+    "write_verified": true,
+    "readback_verified": true,
+    "run_id": "5f0641f6-6b48-4c4e-9937-fe6b318d7b86",
+    "refreshed": 0,
+    "checked": 0,
+    "site_version": 8
   }
 }
