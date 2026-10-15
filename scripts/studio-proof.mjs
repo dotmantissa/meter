@@ -19,6 +19,10 @@ async function retry(fn,write=false){for(;;){try{return await fn();}catch(error)
 function status(tx){return tx.statusName||(typeof tx.status==='number'?transactionsStatusNumberToName[String(tx.status)]:tx.status);}
 async function receipt(hash,expected=true){for(;;){const tx=await retry(()=>client.getTransaction({hash}));if(['FINALIZED','CANCELED','UNDETERMINED'].includes(status(tx))){const ok=status(tx)==='FINALIZED'&&tx.consensus_data?.leader_receipt?.[0]?.execution_result==='SUCCESS';if(ok!==expected)throw new Error(JSON.stringify({hash,status:status(tx),receipt:tx.consensus_data?.leader_receipt?.[0]?.result}));return tx;}await sleep(25000);}}
 const read=(address,functionName,args=[])=>retry(()=>client.readContract({address,functionName,args,transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
+function expectedError(error,message){
+ for(let cause=error;cause;cause=cause.cause){const encoded=cause.data?.receipt?.result;if(typeof encoded==='string'){const result=Buffer.from(encoded,'base64');if(result[0]===1&&result.subarray(1).toString('utf8')===message)return true;}}
+ return false;
+}
 async function write(entry,key,address,functionName,args=[],value=0n){if(!entry[key]){entry[key]=await retry(()=>client.writeContract({address,functionName,args,value,leaderOnly:false}),true);save();console.log({functionName,hash:entry[key]});}return entry[key];}
 const sha=value=>createHash('sha256').update(value).digest('hex');
 const canonical=facts=>JSON.stringify(Object.fromEntries(Object.keys(facts).sort().map(key=>[key,facts[key]])));
@@ -33,6 +37,7 @@ const cases=[
 ];
 for(const source of index){
  const id=source.id+'.review'+(run||'20261015');const entry=state.registrations[source.utility_id]||={id};save();
+ if(entry.verified)continue;
  await receipt(await write(entry,'tx',contracts.registry,'register',[id,source.utility_id,source.schedule_id,source.source_url,source.regulator_url,source.order_url,source.effective_from,source.effective_to]));
  const tariff=await read(contracts.registry,'require_active',[id,'2026-09-01','2026-09-30']);
  if(tariff.content_hash!==source.content_hash)throw new Error('Fresh source differs from registered catalogue evidence');
@@ -43,15 +48,17 @@ for(const test of cases){
  const source=index.find(tariff=>tariff.utility_id===test.utility);
  const facts={tariff_id:state.registrations[test.utility].id,rate_class:source.schedule_id,period_start:'2026-09-01',period_end:'2026-09-30',usage_wh:test.usage,customer_cents:test.basic,energy_cents:test.energy,bill_hash:sha('Meter reviewer integration fixture '+test.name),phase:'single',dwelling:test.dwelling||'single_family'};
  const entry=state.cases[test.name]||={audit_id:sha(client.account.address+canonical(facts)),facts,expected_cents:test.expected,difference_cents:test.difference||0};save();
+ if(entry.verified)continue;
  await write(entry,'audit_tx',contracts.audit,'audit_bill',[canonical(facts)]);
 }
 for(const test of cases){
- const entry=state.cases[test.name];const tx=await receipt(entry.audit_tx);const verdict=await read(contracts.audit,'get_verdict',[entry.audit_id]);
+ const entry=state.cases[test.name];if(entry.verified)continue;const tx=await receipt(entry.audit_tx);const verdict=await read(contracts.audit,'get_verdict',[entry.audit_id]);
  if(verdict.expected_cents!==test.expected||verdict.difference_cents!==(test.difference||0)||verdict.classification!==(test.difference?'OVERCHARGE':'MATCH'))throw new Error('Fresh tariff arithmetic mismatch: '+test.name+' '+JSON.stringify(verdict));
  entry.verdict=verdict;entry.votes=tx.consensus_data?.votes;entry.verified=true;save();console.log({case:test.name,expected_cents:verdict.expected_cents,classification:verdict.classification});
 }
 const disputed=state.cases.pacific_multifamily_dispute;
 const fee=1000000000000000n;
+if(!state.policy.verified){
 await receipt(await write(state.policy,'open_tx',contracts.escrow,'open_claim',[disputed.audit_id],fee));
 const original=await read(contracts.escrow,'get_claim',[disputed.audit_id]);
 await receipt(await write(state.policy,'early_monthly_tx',contracts.audit,'recheck',[disputed.audit_id]),false);
@@ -67,19 +74,20 @@ for(const hash of state.policy.payouts){for(;;){const payout=await retry(()=>cli
 const settled=await read(contracts.escrow,'get_claim',[disputed.audit_id]);
 if(settled.status!=='PARTIAL'||BigInt(settled.fee_wei)!==fee/2000n||BigInt(settled.refund_wei)!==fee-fee/2000n)throw new Error('Proportional settlement failed');
 state.policy.claim=settled;state.policy.verified=true;state.completed_at=new Date().toISOString();save();
-state.legacy||={};
+}
+state.legacy||={};save();
 const oldProof=JSON.parse(readFileSync('deployments/verification.json','utf8'));
 const oldId=oldProof.audit.audit_id;
 const oldVerdict=await read(manifest.legacy_audit,'get_verdict',[oldId]);
 const legacyTariff=oldVerdict.tariff;
 if(!state.legacy.tariff_exists&&!state.legacy.register_tx){
  try{const archived=await read(contracts.registry,'get_tariff',[legacyTariff.id]);for(const field of ['content_hash','regulatory_hash','order_hash'])if(archived[field]!==legacyTariff[field])throw new Error('Legacy hash mismatch');state.legacy.tariff_exists=true;save();}
- catch(error){if(!String(error.details||error.message).includes('Unknown tariff'))throw error;}
+ catch(error){if(!expectedError(error,'[EXPECTED] Unknown tariff'))throw error;}
 }
 if(!state.legacy.tariff_exists)await receipt(await write(state.legacy,'register_tx',contracts.registry,'register',[legacyTariff.id,legacyTariff.utility_id,legacyTariff.schedule_id,legacyTariff.source_url,legacyTariff.regulator_url,legacyTariff.order_url,legacyTariff.effective_from,legacyTariff.effective_to]));
 if(!state.legacy.existing_import&&!state.legacy.import_tx){
  try{const existing=await read(contracts.audit,'get_verdict',[oldId]);if(existing.legacy_origin?.contract.toLowerCase()!==manifest.legacy_audit.toLowerCase())throw new Error('Unexpected existing legacy record');state.legacy.existing_import=true;save();}
- catch(error){if(!String(error.details||error.message).includes('Unknown audit'))throw error;}
+ catch(error){if(!expectedError(error,'[EXPECTED] Unknown audit'))throw error;}
 }
 if(!state.legacy.existing_import)await receipt(await write(state.legacy,'import_tx',contracts.audit,'import_legacy',[oldId]));
 const migrated=await read(contracts.audit,'get_verdict',[oldId]);
