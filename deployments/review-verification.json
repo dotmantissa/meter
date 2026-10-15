@@ -1,0 +1,549 @@
+{
+  "verified_at": "2026-10-15T15:22:44.551657+00:00",
+  "network": "studionet",
+  "chain_id": 61999,
+  "contracts": {
+    "registry": "0x9AB84641Bd2Ac9D3339e06D527D16aa28002b583",
+    "audit": "0x9077C2280D6D3391967f68111ff8CbF16f94Ee96",
+    "escrow": "0xACc7E675bBd314C16DFaC0A319CBFF2DD2d262b4"
+  },
+  "synthetic_test_facts": true,
+  "fixtures_in_customer_index": false,
+  "verified_code_commit": "97c919712902d27833282268be134b526288bcbe",
+  "utility_cases": {
+    "pse_boundary": {
+      "audit_id": "90756398eda0b194075450fafd508936900a614b15a00d93bdb07597b0037a2b",
+      "audit_tx": "0xabd3b4f2ea769842afa07cf5daf6b0995afd144e09a7b087b355f1f50ae0ca01",
+      "tariff_id": "pse.7.2026.review20261015",
+      "usage_wh": 600000,
+      "dwelling": "single_family",
+      "expected_cents": 9245,
+      "difference_cents": 0,
+      "classification": "MATCH",
+      "votes": {
+        "0x3E5ee2507cc167C9925Bf10c67D7986581112024": "idle",
+        "0x4404Fb70d490c935758146f42A73DC850FF95C71": "agree",
+        "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3": "idle",
+        "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84": "agree",
+        "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88": "agree"
+      },
+      "verified": true
+    },
+    "pse_above_boundary": {
+      "audit_id": "56c86f56eebfffb8d0e0f4e606c3c1921ef5ffd55995243ecbdbd8a8c14b8626",
+      "audit_tx": "0x8b7d28913d116e4472a6331655ae1526f782db767ae68898e2b56b7bf90e1cb3",
+      "tariff_id": "pse.7.2026.review20261015",
+      "usage_wh": 700000,
+      "dwelling": "single_family",
+      "expected_cents": 10855,
+      "difference_cents": 0,
+      "classification": "MATCH",
+      "votes": {
+        "0x4404Fb70d490c935758146f42A73DC850FF95C71": "agree",
+        "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC": "idle",
+        "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "idle",
+        "0x76c25AFC12c75485703cCFfd0083AA6201455B25": "agree",
+        "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "agree"
+      },
+      "verified": true
+    },
+    "avista_boundary": {
+      "audit_id": "bcdd21c60168abea60e568542ad727ad6c2517ca2583122fb4cb0135a24f2d2b",
+      "audit_tx": "0x7c0d4fec29f84bd30ccd909416fe3b15bffd2ff345857511558ba14a211a2a14",
+      "tariff_id": "avista.1.2026.review20261015",
+      "usage_wh": 800000,
+      "dwelling": "single_family",
+      "expected_cents": 9258,
+      "difference_cents": 0,
+      "classification": "MATCH",
+      "votes": {
+        "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11": "idle",
+        "0x36728d2a123aB444E603EE5b2ad17d18Bb193557": "agree",
+        "0x4404Fb70d490c935758146f42A73DC850FF95C71": "idle",
+        "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47": "agree",
+        "0x9ea87b28DcA2F79fe108CF06a4c13B4c876AC23d": "agree"
+      },
+      "verified": true
+    },
+    "avista_second_boundary": {
+      "audit_id": "6afab771781f3cf07bb58795a5b857dc42bcf5fbb359b43d44502674cd9050d1",
+      "audit_tx": "0xb3e7cec333ec4b8e14efa9c8118100d3cae5b88a01f4518ace774e3e975f1f3f",
+      "tariff_id": "avista.1.2026.review20261015",
+      "usage_wh": 1500000,
+      "dwelling": "single_family",
+      "expected_cents": 17747,
+      "difference_cents": 0,
+      "classification": "MATCH",
+      "votes": {
+        "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11": "idle",
+        "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47": "agree",
+        "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3": "idle",
+        "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84": "agree",
+        "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88": "agree"
+      },
+      "verified": true
+    },
+    "pacific_single_family": {
+      "audit_id": "e151a30d666c79737d6e1ecc5dd321c928174eb217edfeed00c5a56b4d774918",
+      "audit_tx": "0xf012f99deea2640e489d2d2c1437f1affb79abd446b7a5b2b6ede07dcbde5484",
+      "tariff_id": "pacific.16.2026.review20261015",
+      "usage_wh": 700000,
+      "dwelling": "single_family",
+      "expected_cents": 8286,
+      "difference_cents": 0,
+      "classification": "MATCH",
+      "votes": {
+        "0x3E5ee2507cc167C9925Bf10c67D7986581112024": "agree",
+        "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "agree",
+        "0x76c25AFC12c75485703cCFfd0083AA6201455B25": "idle",
+        "0x9ea87b28DcA2F79fe108CF06a4c13B4c876AC23d": "idle",
+        "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "agree"
+      },
+      "verified": true
+    },
+    "pacific_multifamily_dispute": {
+      "audit_id": "c71a3d95bd3f7e9efac637336abe772652ce850c3811d8cfdb4ecaae1e1327f0",
+      "audit_tx": "0xd41d57b4b1d59c0d99804b1e52be1ac4c08fe5e0a177416f2c67ad3bc918d8a3",
+      "tariff_id": "pacific.16.2026.review20261015",
+      "usage_wh": 700000,
+      "dwelling": "multi_family",
+      "expected_cents": 8111,
+      "difference_cents": 2000,
+      "classification": "OVERCHARGE",
+      "votes": {
+        "0x3E5ee2507cc167C9925Bf10c67D7986581112024": "agree",
+        "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47": "agree",
+        "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "agree",
+        "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3": "idle",
+        "0x76c25AFC12c75485703cCFfd0083AA6201455B25": "idle"
+      },
+      "verified": true
+    }
+  },
+  "policy_and_partial_fee": {
+    "open_tx": "0xb45320ece4dc7c535971043ac538c91c4dea0d8652d52cdc17359056f8823f25",
+    "early_monthly_tx": "0xd15f3e5d98c60ef3c3ce2ab170e3d8c2776dbf2ee817079f0a313ef3b4083aeb",
+    "appeal_tx": "0xd9e659d6bfec1942bab7c70790bacaf1c3b787aae964fb1fcc329d396777fa8b",
+    "confirmation_verified": true,
+    "resolve_tx": "0xaf986d568754f3c8a2c4e429f8c2b2d98880c326823fb7d62764c7e0506bfb16",
+    "payouts": [
+      "0x9aa8989210de9a6f4c6e506693ac57e3ac0557c3606fcb3e14a4bdc5a04061dd",
+      "0x724fb2d6b0c9aaac9a564b1fd084162dec7f3607cd9101bbeb8492edd0baea35"
+    ],
+    "claim": {
+      "deposit_wei": 0,
+      "disputed_cents": 2000,
+      "fee_wei": 500000000000,
+      "id": "c71a3d95bd3f7e9efac637336abe772652ce850c3811d8cfdb4ecaae1e1327f0",
+      "material_hash": "b6f91e791f2291a8d44efddfd7b5e2710b88dd3a0f89f93856701ff0c5c61820",
+      "recovered_cents": 1,
+      "refund_wei": 999500000000000,
+      "status": "PARTIAL",
+      "verdict_revision": 1
+    },
+    "verified": true
+  },
+  "legacy_migration": {
+    "register_tx": "0x0b4333fa23aff7ee8a64f9d0f899e5cdb52ed6e3507da413fe0bbc55af0a6108",
+    "import_tx": "0xdafb93e271fb42cfaafa60fe20775c00e2b59a958cd3f33dc5041fcd4698f5e8",
+    "audit_id": "50462d2df6b9796fed7b5b8935152b6169c332416ed4c35d7bb796db60d2403e",
+    "verdict": {
+      "actor": "0xBC1399c55538eC034d4Da550C03c34Ae0C357f53",
+      "appealed": false,
+      "billed_cents": 9258,
+      "changed_this_revision": false,
+      "classification": "MATCH",
+      "corrected": false,
+      "customer_cents": 1000,
+      "difference_cents": 0,
+      "energy_cents": 8258,
+      "evidence_mode": "ARCHIVED",
+      "expected_cents": 9258,
+      "facts": {
+        "bill_hash": "4f4f9001e9ebe653da66d538ae1885f24fd336150bdf75cc9c3072bca5cbbbcf",
+        "customer_cents": 1000,
+        "dwelling": "single_family",
+        "energy_cents": 8258,
+        "period_end": "2026-09-30",
+        "period_start": "2026-09-01",
+        "phase": "single",
+        "rate_class": "1",
+        "tariff_id": "avista.1.selftest",
+        "usage_wh": 800000
+      },
+      "id": "50462d2df6b9796fed7b5b8935152b6169c332416ed4c35d7bb796db60d2403e",
+      "legacy_origin": {
+        "contract": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339",
+        "revision": 2
+      },
+      "material_hash": "f94aba6cafb0a7b0c55b0e919ce5b62d300e2b243856f36933953b3db3c2a918",
+      "material_revision": 1,
+      "parameters": {
+        "basic_micro_usd": 10000000,
+        "effective_from": "2026-01-01",
+        "effective_to": "9999-12-31",
+        "reason_code": "SUPPORTED",
+        "required_class": "1",
+        "schedule_id": "1",
+        "supported": true,
+        "tiers": [
+          {
+            "micro_usd_per_kwh": 103220,
+            "up_to_wh": 800000
+          },
+          {
+            "micro_usd_per_kwh": 121270,
+            "up_to_wh": 1500000
+          },
+          {
+            "micro_usd_per_kwh": 143490,
+            "up_to_wh": 0
+          }
+        ]
+      },
+      "previous_classification": "MATCH",
+      "reason": "MIGRATION",
+      "recorded_at": 1792077415,
+      "revision": 2,
+      "scope": "BASE_CHARGES",
+      "tariff": {
+        "changed_without_date": false,
+        "content_hash": "6497bee8e78de489f7966cfba837b76ae10a899d1e30799e2eafd0b137224afa",
+        "effective_from": "2026-01-01",
+        "effective_to": "9999-12-31",
+        "id": "avista.1.selftest",
+        "order_hash": "8db4fee5d132efca578773675798f7d646521f0a259fd2f28b8b8a72ae995e1a",
+        "order_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1798&year=2024&docketNumber=240006",
+        "regulator_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1782&year=2024&docketNumber=240006",
+        "regulatory_hash": "6b352fded070b66a243f7cc9c97642274bd9c2bca00dee3041ea562c1c5a224b",
+        "revision": 1,
+        "schedule_id": "1",
+        "source_url": "https://www.myavista.com/-/media/myavista/content-documents/our-rates-and-tariffs/wa/wa_001.pdf",
+        "utility_id": "avista"
+      }
+    },
+    "history": [
+      {
+        "actor": "0xBC1399c55538eC034d4Da550C03c34Ae0C357f53",
+        "appealed": false,
+        "billed_cents": 9258,
+        "classification": "MATCH",
+        "corrected": false,
+        "customer_cents": 1000,
+        "difference_cents": 0,
+        "energy_cents": 8258,
+        "expected_cents": 9258,
+        "facts": {
+          "bill_hash": "4f4f9001e9ebe653da66d538ae1885f24fd336150bdf75cc9c3072bca5cbbbcf",
+          "customer_cents": 1000,
+          "dwelling": "single_family",
+          "energy_cents": 8258,
+          "period_end": "2026-09-30",
+          "period_start": "2026-09-01",
+          "phase": "single",
+          "rate_class": "1",
+          "tariff_id": "avista.1.selftest",
+          "usage_wh": 800000
+        },
+        "id": "50462d2df6b9796fed7b5b8935152b6169c332416ed4c35d7bb796db60d2403e",
+        "legacy_origin": {
+          "contract": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339",
+          "revision": 2
+        },
+        "material_hash": "f94aba6cafb0a7b0c55b0e919ce5b62d300e2b243856f36933953b3db3c2a918",
+        "material_revision": 1,
+        "parameters": {
+          "basic_micro_usd": 10000000,
+          "effective_from": "2026-01-01",
+          "effective_to": "9999-12-31",
+          "reason_code": "SUPPORTED",
+          "required_class": "1",
+          "schedule_id": "1",
+          "supported": true,
+          "tiers": [
+            {
+              "micro_usd_per_kwh": 103220,
+              "up_to_wh": 800000
+            },
+            {
+              "micro_usd_per_kwh": 121270,
+              "up_to_wh": 1500000
+            },
+            {
+              "micro_usd_per_kwh": 143490,
+              "up_to_wh": 0
+            }
+          ]
+        },
+        "previous_classification": "MATCH",
+        "reason": "LEGACY_SNAPSHOT",
+        "recorded_at": 1792077415,
+        "revision": 1,
+        "scope": "BASE_CHARGES",
+        "tariff": {
+          "changed_without_date": false,
+          "content_hash": "6497bee8e78de489f7966cfba837b76ae10a899d1e30799e2eafd0b137224afa",
+          "effective_from": "2026-01-01",
+          "effective_to": "9999-12-31",
+          "id": "avista.1.selftest",
+          "order_hash": "8db4fee5d132efca578773675798f7d646521f0a259fd2f28b8b8a72ae995e1a",
+          "order_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1798&year=2024&docketNumber=240006",
+          "regulator_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1782&year=2024&docketNumber=240006",
+          "regulatory_hash": "6b352fded070b66a243f7cc9c97642274bd9c2bca00dee3041ea562c1c5a224b",
+          "revision": 1,
+          "schedule_id": "1",
+          "source_url": "https://www.myavista.com/-/media/myavista/content-documents/our-rates-and-tariffs/wa/wa_001.pdf",
+          "utility_id": "avista"
+        }
+      },
+      {
+        "actor": "0xBC1399c55538eC034d4Da550C03c34Ae0C357f53",
+        "appealed": false,
+        "billed_cents": 9258,
+        "changed_this_revision": false,
+        "classification": "MATCH",
+        "corrected": false,
+        "customer_cents": 1000,
+        "difference_cents": 0,
+        "energy_cents": 8258,
+        "evidence_mode": "ARCHIVED",
+        "expected_cents": 9258,
+        "facts": {
+          "bill_hash": "4f4f9001e9ebe653da66d538ae1885f24fd336150bdf75cc9c3072bca5cbbbcf",
+          "customer_cents": 1000,
+          "dwelling": "single_family",
+          "energy_cents": 8258,
+          "period_end": "2026-09-30",
+          "period_start": "2026-09-01",
+          "phase": "single",
+          "rate_class": "1",
+          "tariff_id": "avista.1.selftest",
+          "usage_wh": 800000
+        },
+        "id": "50462d2df6b9796fed7b5b8935152b6169c332416ed4c35d7bb796db60d2403e",
+        "legacy_origin": {
+          "contract": "0x50FF44E251eAEea0269A98B595e9E6F5e3249339",
+          "revision": 2
+        },
+        "material_hash": "f94aba6cafb0a7b0c55b0e919ce5b62d300e2b243856f36933953b3db3c2a918",
+        "material_revision": 1,
+        "parameters": {
+          "basic_micro_usd": 10000000,
+          "effective_from": "2026-01-01",
+          "effective_to": "9999-12-31",
+          "reason_code": "SUPPORTED",
+          "required_class": "1",
+          "schedule_id": "1",
+          "supported": true,
+          "tiers": [
+            {
+              "micro_usd_per_kwh": 103220,
+              "up_to_wh": 800000
+            },
+            {
+              "micro_usd_per_kwh": 121270,
+              "up_to_wh": 1500000
+            },
+            {
+              "micro_usd_per_kwh": 143490,
+              "up_to_wh": 0
+            }
+          ]
+        },
+        "previous_classification": "MATCH",
+        "reason": "MIGRATION",
+        "recorded_at": 1792077415,
+        "revision": 2,
+        "scope": "BASE_CHARGES",
+        "tariff": {
+          "changed_without_date": false,
+          "content_hash": "6497bee8e78de489f7966cfba837b76ae10a899d1e30799e2eafd0b137224afa",
+          "effective_from": "2026-01-01",
+          "effective_to": "9999-12-31",
+          "id": "avista.1.selftest",
+          "order_hash": "8db4fee5d132efca578773675798f7d646521f0a259fd2f28b8b8a72ae995e1a",
+          "order_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1798&year=2024&docketNumber=240006",
+          "regulator_url": "https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1782&year=2024&docketNumber=240006",
+          "regulatory_hash": "6b352fded070b66a243f7cc9c97642274bd9c2bca00dee3041ea562c1c5a224b",
+          "revision": 1,
+          "schedule_id": "1",
+          "source_url": "https://www.myavista.com/-/media/myavista/content-documents/our-rates-and-tariffs/wa/wa_001.pdf",
+          "utility_id": "avista"
+        }
+      }
+    ],
+    "verified": true
+  },
+  "isolated_native_refund_harness": {
+    "cases": {
+      "automatic_correction": {
+        "seed_tx": "0x3302082fc67a9e1deefd853646645195fba8828523f7fe9fc26467222ff38dae",
+        "balance_before": "3000000000000000",
+        "open_tx": "0x8a6b3296ac30eeb5b350ba522c6eda27a6a0515570ed8df9d93f34dfbfc2fb55",
+        "correct_tx": "0xbd68d432a37d5896488c8ba9a83ab075182fa9293e3a3eae424b40c55c271cb9",
+        "payout_tree": {
+          "hash": "0xbd68d432a37d5896488c8ba9a83ab075182fa9293e3a3eae424b40c55c271cb9",
+          "children": [
+            "0x6ac7f66b76637e222d5d0d99a3a17ed752d4e4ad0f8ce0d7839cc9b872113045"
+          ]
+        },
+        "balance_after": "3000000000000000",
+        "claim": {
+          "deposit_wei": 0,
+          "disputed_cents": 2000,
+          "fee_wei": 0,
+          "id": "automatic_correction",
+          "material_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "recovered_cents": 0,
+          "refund_wei": 1000000000000000,
+          "status": "REFUNDED",
+          "verdict_revision": 1
+        },
+        "verified": true
+      },
+      "manual_correction": {
+        "seed_tx": "0x8eb8578564efd16aa4ec9287a6dcc85ca20c73b689a6ca1c46d19da6a8dee2ff",
+        "balance_before": "3000000000000000",
+        "open_tx": "0x0acca2f0af7be94e353cbb4f5ab1af748ebc0be0335ed97c967ca21ce32067a0",
+        "correct_tx": "0xb2b657cb46b61a113b52c13571385df7603549fa95e5b785dfc1656f90d885ac",
+        "finish_tx": "0x6cd1afda2f46950ae2b8dce04b470778bb79e733af43edcc0759bbd614af0fa4",
+        "payout_tree": {
+          "hash": "0x6cd1afda2f46950ae2b8dce04b470778bb79e733af43edcc0759bbd614af0fa4",
+          "children": [
+            "0xd411a336304db151236ed8543521fbbdd2ced0f4d06a53843a393b90254305aa"
+          ]
+        },
+        "balance_after": "3000000000000000",
+        "claim": {
+          "deposit_wei": 0,
+          "disputed_cents": 2000,
+          "fee_wei": 0,
+          "id": "manual_correction",
+          "material_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "recovered_cents": 0,
+          "refund_wei": 1000000000000000,
+          "status": "REFUNDED",
+          "verdict_revision": 1
+        },
+        "verified": true,
+        "repeat_tx": "0xd02a7a37db52ac2a1ca24ee322d234784a1921f9e7749c3baaef6213df0f83c7"
+      },
+      "cancel_after_correction": {
+        "seed_tx": "0x82dd80b1da3cba6698132e34484f023dfd2c5b4fa1479d939a64b5954a47d3ef",
+        "balance_before": "3000000000000000",
+        "open_tx": "0x69caa80698a5e56f2ed6b39ace2bc7fb08e728b56684eee08f0eff96554f35b1",
+        "correct_tx": "0xb17df5468a3642162bf7c5439dc0f1508eb422237d7fe96979336a49387f8548",
+        "finish_tx": "0xb4ad091a883c4c569ec780fa95527aa13dcd1b5d09e5a54d733d0c0902d542c4",
+        "payout_tree": {
+          "hash": "0xb4ad091a883c4c569ec780fa95527aa13dcd1b5d09e5a54d733d0c0902d542c4",
+          "children": [
+            "0x1c71f8044ca261438e685192a2caad1e21b103660dd15ec12f8582503eb608f0"
+          ]
+        },
+        "balance_after": "3000000000000000",
+        "claim": {
+          "deposit_wei": 0,
+          "disputed_cents": 2000,
+          "fee_wei": 0,
+          "id": "cancel_after_correction",
+          "material_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "recovered_cents": 0,
+          "refund_wei": 1000000000000000,
+          "status": "CANCELLED",
+          "verdict_revision": 1
+        },
+        "verified": true
+      }
+    },
+    "kind": "ISOLATED_ESCROW_DRIVER",
+    "funding_tx": "0x2cfd4ac2aefdaba3e220ab2e573d2b8350bfada4be2ed592c3ddf398a5d385e4",
+    "beneficiary": "0x79d7C631948f57bD0165D51dBb44564F32645D74",
+    "driver": {
+      "tx": "0xade78969abae762c89e873cbd9e0952248d9a29d1c1dca75eb994c25a36f9c44",
+      "address": "0x4DB1576C2fBbF3bf7876444284C4BD9967869C86"
+    },
+    "escrow": {
+      "tx": "0x5f94581da163c4cb64c85c3615adbffa4b3f3e078c42b8f408e144a073439c43",
+      "address": "0x6F7cc9FFC143b1656Ec36bc8A3E2aeF1311bb12f"
+    },
+    "link_tx": "0x2637ce212d9a6ae0f4d017a333c4e9d2ce4dcfb8d49ae49ed297fd41a7feae69",
+    "completed_at": "2026-10-15T15:12:00.893Z"
+  },
+  "database_concurrency": {
+    "distinct_users": {
+      "requests": 12,
+      "grants_reserved": 1,
+      "daily_reserved": 100
+    },
+    "duplicate_user": {
+      "requests": 12,
+      "grants_reserved": 1,
+      "daily_reserved": 1
+    }
+  },
+  "http": {
+    "health": {
+      "status": 200,
+      "current_contracts": true
+    },
+    "tariffs": {
+      "status": 200,
+      "count": 3
+    },
+    "/api/audits": {
+      "anonymous": 401
+    },
+    "/api/worker": {
+      "anonymous": 401
+    },
+    "worker": {
+      "status": 200,
+      "run_id": "05a075b1-569b-4463-a81c-bc81992a4859"
+    },
+    "forged_gateway_identity_rejected": true,
+    "archive_content_hash": {
+      "status": 200,
+      "sha256": "540f91827b7b7fa1573219b4d26798619c469aa03bf327041e3237085041b006",
+      "pages": 3,
+      "bytes": 206087
+    },
+    "archive_regulatory_hash": {
+      "status": 200,
+      "sha256": "70bacc7ccaf3e9e4653da2e488d3b425bf6922173a75f553e9ca2a0ea49f03b7",
+      "pages": 133,
+      "bytes": 2210816
+    }
+  },
+  "sites": {
+    "project_id": "appgprj_6acf88f00024819184a8deb3e7f18cea",
+    "version": 8,
+    "source_commit": "811e5dc5c86a45c83249c9a7d0f622729439c745",
+    "deployment_id": "appgdep_6ad0ed94f4088191ba97d50a7aeb5047",
+    "environment_revision": 8,
+    "status": "succeeded",
+    "url": "https://meter-bill-review.candidtuna3.chatgpt.site"
+  },
+  "checks": {
+    "direct_contract_tests": 53,
+    "web_tests": 36,
+    "studio_integration_tests": 11,
+    "real_neon_integration_tests": 1,
+    "integration_total": 12,
+    "genvm_lint_production_contracts": 3,
+    "genvm_lint_isolated_driver": 1,
+    "frontend_lint": "passed",
+    "typecheck": "passed",
+    "native_next_build": "passed",
+    "sites_worker_build": "passed",
+    "hosted_browser_desktop_mobile": "passed",
+    "back_to_top_keyboard_and_touch": "passed",
+    "private_pdf_identity_requests": 0
+  },
+  "automation": {
+    "id": "Automation_4b813f0256bc8191ac2361ddc16947da",
+    "enabled": true,
+    "timezone": "Africa/Lagos",
+    "queue_cadence": "hourly",
+    "review_cadence": "consenting owners, contract gate of 30 days"
+  }
+}

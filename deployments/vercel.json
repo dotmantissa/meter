@@ -1,6 +1,6 @@
 {
-  "id": "dpl_4eYckCitB4Qs8u7RrPk34YvYvay2",
-  "url": "meter-audit-18i1w2gg3-mantissas-projects.vercel.app",
+  "id": "dpl_3zgKvMseQ5JkD16xanYx1BqC9q52",
+  "url": "meter-audit-gel5s03sg-mantissas-projects.vercel.app",
   "readyState": "READY",
   "alias": [
     "meter-audit.vercel.app",
@@ -9,7 +9,7 @@
   "target": "production",
   "project_id": "prj_L1fdHrmGfo2ahs2l5RFTdV8KJiTC",
   "production_url": "https://meter-audit.vercel.app",
-  "application_commit": "1a0d93746e0736c8643c16c9909987950a6f7136",
+  "application_commit": "ceab32cfc65d45c555be3127a50a84e14fdceece",
   "root_directory": "web",
   "node_version": "22.x",
   "framework": "nextjs",
@@ -28,23 +28,36 @@
     "hosted_browser": "passed",
     "private_pdf_identity_requests": 0,
     "http": {
-      "tariffs": {
-        "status": 200,
-        "count": 3
-      },
       "health": {
         "status": 200,
         "current_contracts": true
       },
+      "tariffs": {
+        "status": 200,
+        "count": 3
+      },
       "/api/audits": {
-        "anonymous_status": 401
+        "anonymous": 401
       },
       "/api/worker": {
-        "anonymous_status": 401
+        "anonymous": 401
       },
       "worker": {
         "status": 200,
-        "saved_run_id": "193daa23-f60b-4de4-859b-47a74b631797"
+        "run_id": "05a075b1-569b-4463-a81c-bc81992a4859"
+      },
+      "forged_gateway_identity_rejected": true,
+      "archive_content_hash": {
+        "status": 200,
+        "sha256": "540f91827b7b7fa1573219b4d26798619c469aa03bf327041e3237085041b006",
+        "pages": 3,
+        "bytes": 206087
+      },
+      "archive_regulatory_hash": {
+        "status": 200,
+        "sha256": "70bacc7ccaf3e9e4653da2e488d3b425bf6922173a75f553e9ca2a0ea49f03b7",
+        "pages": 133,
+        "bytes": 2210816
       }
     },
     "navigation_scroll": {
@@ -54,6 +67,12 @@
       "section_anchor_offsets": "passed",
       "dark_theme": "passed",
       "privacy_and_verdict_layouts": "passed"
+    },
+    "web_tests": 36,
+    "back_to_top": {
+      "desktop_keyboard": "passed",
+      "mobile_touch": "passed",
+      "reduced_motion": "passed"
     }
   },
   "previous_verified_deployments": [
@@ -61,6 +80,11 @@
       "id": "dpl_8Pr48taWtoC6d7XAiqYNw8vzoVwc",
       "url": "meter-audit-2s82aidb0-mantissas-projects.vercel.app",
       "application_commit": "704db447fdd9b9bddfd83717e1fbd52484a37325"
+    },
+    {
+      "id": "dpl_4eYckCitB4Qs8u7RrPk34YvYvay2",
+      "url": "meter-audit-18i1w2gg3-mantissas-projects.vercel.app",
+      "application_commit": "1a0d93746e0736c8643c16c9909987950a6f7136"
     }
   ]
 }

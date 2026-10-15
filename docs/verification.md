@@ -1,29 +1,39 @@
 # Verification record
 
-Checked on 14 October 2026 against GenLayer Studio, chain 61999.
+Checked on 15 October 2026 against GenLayer Studio, chain 61999. The current addresses and code hashes are in [the deployment manifest](../deployments/studio.json). [Public receipts](../deployments/review-verification.json) record each case. The earlier record remains available as [history](verification-2026-10-14.md).
 
-The app is live at https://meter-bill-review.candidtuna3.chatgpt.site. Sites version 3 uses source commit `a14045562541cce1093b3a39126af61deabf5599`. Its production build, type checking, frontend lint and seven privacy tests passed. The published health endpoint confirms the addresses in `deployments/studio.json` and reads the linked recovery pool.
+All 53 direct contract tests and 36 web tests passed. All 12 integration cases passed in 53.91 seconds: eleven Studio readbacks after fresh live submissions, plus an actual concurrent PostgreSQL test on Neon. All three production contracts and the isolated escrow driver pass GenVM lint. The audit has one documented warning for `io`, used solely for an in memory PDF buffer. Frontend lint, TypeScript, native Next production builds and Sites Worker builds passed.
 
-All three contract files pass GenVM lint. The audit produces an import warning for `io`, used only for an in memory PDF buffer. Its runner version is pinned. The direct suite passes 35 cases covering source changes, date gates, schema validation, exact rates, tier rounding, comparison tolerance, appeals, escrow deposits, cancellation and resolution.
+## Fresh utility adjudication
 
-The direct runner currently returns an empty sandbox result. A documented adapter executes arithmetic through the VM Return wrapper in unit tests. Independent PDF extraction and the real sandbox are checked separately through Studio transactions. Unit fixtures remain in tests. Live fixtures use `avista.1.selftest`, excluded from the customer tariff library and utility aggregates.
+The proof runner submitted six new audits with real document fetching, independent model extraction and the real GenVM sandbox. PSE reproduced $92.45 at 600 kWh and $108.55 at 700 kWh. Avista reproduced $92.58 at 800 kWh and $177.47 at 1,500 kWh. Pacific Power reproduced $82.86 for single family service and $81.11 for multifamily service at 700 kWh. The latter deliberately billed $20 extra and returned OVERCHARGE.
 
-All three final Studio integration cases passed. The live audit reproduced Avista’s base charges at $92.58, with three agreeing validators, one disagreeing validator and one idle validator. Its recheck persisted revision 2. The escrow accepted a real deposit, cancelled the claim, finalized its native refund, and restored the recipient’s exact prior balance. The bonded appeal also persisted its second revision. Selected public receipts and the refund balances are in [deployments/verification.json](../deployments/verification.json).
+These cases use separate test tariff IDs and synthetic anonymous facts. They never enter the app's saved review index or supported utility aggregates. Every source PDF is real. Every page is extracted, subject to explicit rejection limits. The tests do not replace the PDF parser, model calls, validator agreement or sandbox.
 
-The hosted browser check found three real tariff records, no page errors, and no horizontal overflow at desktop or mobile widths. It verified navigation, light and dark themes, the email only modal, local PDF extraction, and no outgoing request containing the test bill’s private identity markers. It did not send a login email or complete an actual customer OTP session.
+Fresh PSE testing exposed AES encryption in its public utility PDF. The corrected bundle includes pyaes 1.6.1 alongside pypdf 6.10.2. Known AES vectors, strict padding checks and actual encrypted PDFs pass through the packaged reader. Rebuilding that package produces exactly the deployed SHA256. A separate parser regression places the authoritative text in the middle of a thirteen page PDF. Oversized evidence is rejected rather than sampled.
 
-Anonymous calls to saved review and worker endpoints returned 401. The worker was invoked with its intended service credential and saved run `4e45af25-c88d-4136-8b4a-c118cb320b87` in Neon. Reading the protected status endpoint returned the same completed run with no error. Zero reviews were due; no customer bills were manufactured for this check.
+The direct audit fixture still uses the documented sandbox adapter required by genlayer test 0.29.2. The fresh Studio tests independently exercise the real sandbox. That boundary is deliberate and is not hidden by the unit test count.
 
-The linked task `Automation_4b813f0256bc8191ac2361ddc16947da` is enabled hourly in Africa/Lagos time. Per review consent and monthly due dates determine what the worker processes. The task was saved and the writer was exercised independently; no claim is made that the first scheduled occurrence has run.
+## Settlement and historical evidence
 
-Tracked source, new source files and the final production archive were scanned against the supplied credentials and generated signing and worker secrets. No matches were found. Runtime configuration stays in ignored files or the hosting secret store. The recovery checklist and agent instructions are ignored, and Git history is checked for the sole requested author.
+An immediate monthly confirmation was rejected. A bonded confirmation retained the same material hash while advancing the revision. The open production escrow remained eligible. Attesting recovery of one cent from a $20 dispute released 500,000,000,000 wei as the fee and refunded 999,500,000,000,000 wei. Both native payout transactions finalized.
 
-## Vercel
+A separate deployed revision driver tested controlled state changes against the unchanged production escrow code. Automatic correction synchronization, manual synchronization and cancellation after MATCH each restored the depositor's exact prior balance. A repeat synchronization was harmless. This driver is an isolated test harness. It cannot update an application verdict and is not evidence of independent tariff extraction. The actual audit callback is covered separately in direct tests.
 
-The native Next.js deployment is available at https://meter-audit.vercel.app. It uses Node 22, the `web` project root, and a dedicated TypeScript configuration for application sources. The build, type check, frontend lint, and seven privacy tests passed. The hosted browser check repeated desktop, mobile, theme, navigation, email modal, and local PDF privacy checks with no page errors or failed assets.
+A legacy Avista audit was imported by its original owner. All three original document hashes matched the preserved archive. The new history retained the latest legacy snapshot and then a fresh MIGRATION revision, reproducing $92.58. The record identifies the original contract and revision. It does not pretend that the older contract stored a complete history.
 
-The live tariff endpoint returned three indexed records. Health returned the current Studio contract addresses and read the linked escrow pool. Anonymous review and worker requests returned 401. Authorized worker status returned a completed saved run from the shared Neon database. The existing Sites task continues to process that same queue.
+The live archive endpoint returned PSE's three page utility PDF and its complete 133 page filed document. Their bytes matched the committed hashes exactly. Historical appeals use these preserved bytes even if a later live source changes. A hash alone cannot recover a document that disappeared before it was archived.
 
-All nine production configuration values were stored as sensitive Vercel environment entries. The upload list and native browser bundle passed credential scans. No credentials were supplied as command arguments. The first remote build exposed a shared type check referencing an excluded Sites helper; the corrected deployment passed with the application scope. Deployment identifiers and public check results are in [deployments/vercel.json](../deployments/vercel.json).
+## Application and worker checks
 
-The navigation header stays at the top while scrolling. The published change was checked at desktop and mobile widths, including section anchor offsets, dark theme, the mobile menu, and privacy and verdict layouts. Interactive checks wait for the client to finish loading before clicking.
+The PostgreSQL state tests cover independent receipts, concurrent action reservations, auxiliary failure recovery, cancellation with no visible verdict, later direct contract revisions, migration races and delayed responses from an earlier contract. Source refresh tests cover failed, canceled and undetermined transactions, uncertain broadcasts and late receipt reconciliation.
+
+The actual Neon concurrency test reserves the last slot across twelve different users exactly once. Twelve requests for the same user also consume one slot. It uses the exact production function in an isolated schema and drops that schema afterwards. It spends no sponsorship funds.
+
+Both hosted apps passed desktop and mobile browser checks for the sticky header, keyboard and touch back to top, themes, navigation, email modal and local PDF parsing. No page errors, horizontal overflow or outgoing request containing the test PDF's private identity markers were found. An actual customer email OTP session was not exercised.
+
+Anonymous review and worker requests returned 401. The Vercel host rejected a forged Sites identity header. The Sites worker completed an authorized POST and its protected GET returned the same saved run. There were no customer reviews due, and no customer bills were fabricated. The existing hourly Africa/Lagos task remains enabled; consent and the contract's 30 day gate determine actual rechecks.
+
+The primary app is [Meter on Vercel](https://meter-audit.vercel.app). The [Sites app](https://meter-bill-review.candidtuna3.chatgpt.site) hosts the same application and recurring worker against the shared database and stable signing seed. Its version and source commit are recorded with the receipts. [Vercel deployment details](../deployments/vercel.json) preserve the verified release history.
+
+Source, the complete Git history, the native browser bundle and the final Sites archive passed credential scans. Runtime secrets remain in ignored local files or hosting secret stores. Commits use only dotmantissa with the requested email and no coauthor trailers. The [review response](review-response.md) maps the changes to all eleven findings.
