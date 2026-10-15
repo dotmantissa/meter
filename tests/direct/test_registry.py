@@ -24,7 +24,7 @@ def test_refresh_preserves_original_and_flags_change(registry, direct_vm):
     original=registry.get_tariff('pse.7.2026')['content_hash']
     registry.refresh('pse.7.2026')
     assert registry.get_tariff('pse.7.2026')['revision']==1
-    direct_vm.clear_mocks();direct_vm.mock_web(r'https://.*',{'status':200,'body':b'changed'*100})
+    direct_vm.clear_mocks();direct_vm.mock_web(r'https://.*',{'status':200,'body':b'%PDF-'+b'changed'*100})
     registry.refresh('pse.7.2026')
     t=registry.get_tariff('pse.7.2026')
     assert t['content_hash']==original and t['changed_without_date'] and t['revision']==2
@@ -36,3 +36,12 @@ def test_source_failure_is_not_registered(direct_vm,direct_deploy):
     direct_vm.mock_web(r'https://.*',{'status':503,'body':b''})
     with direct_vm.expect_revert('TRANSIENT'):r.register('new','pse','7','https://www.pse.com/test.pdf','https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1','https://apiproxy.utc.wa.gov/cases/GetDocument?docID=2','2026-01-29','9999-12-31')
     assert r.list_tariffs()==[]
+
+
+def test_changed_live_source_preserves_reviewable_archive(registry,direct_vm,pdf_bytes):
+    t=registry.get_tariff('pse.7.2026')
+    direct_vm.clear_mocks();direct_vm.mock_web(r'https://.*',{'status':200,'body':b'%PDF-'+b'changed'*100})
+    registry.refresh('pse.7.2026')
+    assert registry.require_historical('pse.7.2026','2026-09-01','2026-09-30')['content_hash']==t['content_hash']
+    assert registry.get_document(t['content_hash'])==pdf_bytes
+    with direct_vm.expect_revert('changed without'):registry.require_active('pse.7.2026','2026-09-01','2026-09-30')

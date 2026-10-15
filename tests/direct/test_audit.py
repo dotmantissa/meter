@@ -77,7 +77,7 @@ def test_bond_appeal_once_and_corrections(audit,direct_vm,facts,params):
     assert audit.get_verdict(i)['revision']==2
     assert not audit.get_verdict(i)['corrected']
     assert audit.get_stats('pse.7.2026','2026-09')['MATCH']==1
-    with direct_vm.expect_revert('already'):audit.appeal(i)
+    with direct_vm.expect_revert('one hour'):audit.appeal(i)
 
 
 def test_error_comparison_never_agrees_on_bad_model(audit_module):

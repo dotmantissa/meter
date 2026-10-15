@@ -29,7 +29,7 @@ def valid_date(value):
         return False
 
 
-def fetch_hash(url):
+def fetch_document(url):
     response = gl.nondet.web.get(url)
     if response.status >= 500:
         raise gl.vm.UserError('[TRANSIENT] Source unavailable')
@@ -37,7 +37,13 @@ def fetch_hash(url):
         raise gl.vm.UserError('[EXTERNAL] Source returned ' + str(response.status))
     if len(response.body) < 100 or len(response.body) > 8000000:
         raise gl.vm.UserError('[EXPECTED] Invalid source size')
-    return hashlib.sha256(response.body).hexdigest()
+    if not response.body.startswith(b'%PDF-'):
+        raise gl.vm.UserError('[EXTERNAL] Source is not a PDF')
+    return response.body
+
+
+def fetch_hash(url):
+    return hashlib.sha256(fetch_document(url)).hexdigest()
 
 
 class TariffRegistry(gl.Contract):
@@ -45,6 +51,7 @@ class TariffRegistry(gl.Contract):
     tariffs: TreeMap[str, Tariff]
     history: TreeMap[str, str]
     keys: DynArray[str]
+    documents: TreeMap[str, bytes]
 
     def __init__(self):
         self.owner = gl.message.sender_address
@@ -66,8 +73,11 @@ class TariffRegistry(gl.Contract):
         if not valid_date(effective_from) or not valid_date(effective_to) or effective_from > effective_to:
             raise gl.vm.UserError('[EXPECTED] Invalid effective interval')
         def fetch_registration():
-            return [fetch_hash(source_url), fetch_hash(regulator_url), fetch_hash(order_url)]
-        hashes = gl.eq_principle.strict_eq(fetch_registration)
+            return [fetch_document(source_url), fetch_document(regulator_url), fetch_document(order_url)]
+        bodies = gl.eq_principle.strict_eq(fetch_registration)
+        hashes = [hashlib.sha256(body).hexdigest() for body in bodies]
+        for digest, body in zip(hashes, bodies):
+            self.documents[digest] = body
         self.tariffs[tariff_id] = Tariff(utility_id, schedule_id, source_url, regulator_url,
             order_url, effective_from, effective_to, hashes[0], hashes[1], hashes[2], False, u256(1))
         self.keys.append(tariff_id)
@@ -113,3 +123,19 @@ class TariffRegistry(gl.Contract):
     @gl.public.view
     def list_tariffs(self) -> list:
         return [self.get_tariff(k) for k in self.keys]
+
+    @gl.public.view
+    def get_document(self, digest: str) -> bytes:
+        if digest not in self.documents:
+            raise gl.vm.UserError('[EXPECTED] Archived evidence not found')
+        return self.documents[digest]
+
+    @gl.public.view
+    def require_historical(self, tariff_id: str, period_start: str, period_end: str) -> dict:
+        t = self.get_tariff(tariff_id)
+        if not valid_date(period_start) or not valid_date(period_end) or period_start > period_end or period_start < t['effective_from'] or period_end > t['effective_to']:
+            raise gl.vm.UserError('[EXPECTED] Bill crosses or falls outside tariff dates')
+        for key in ('content_hash', 'regulatory_hash', 'order_hash'):
+            if t[key] not in self.documents:
+                raise gl.vm.UserError('[EXPECTED] Historical evidence unavailable')
+        return t

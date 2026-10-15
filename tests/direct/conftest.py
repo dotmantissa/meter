@@ -39,14 +39,15 @@ def audit(direct_vm, direct_deploy, params, monkeypatch):
     from types import SimpleNamespace
     import sys
     t = {'id':'pse.7.2026','schedule_id':'7','effective_from':'2026-01-29', 'source_url':'https://www.pse.com/test.pdf','regulator_url':'https://apiproxy.utc.wa.gov/cases/GetDocument?docID=1', 'order_url':'https://apiproxy.utc.wa.gov/cases/GetDocument?docID=2', 'content_hash':'a'*64,'regulatory_hash':'a'*64,'order_hash':'a'*64}
-    a = direct_deploy('contracts/meter_audit.py', '0x'+'1'*40, 100)
+    a = direct_deploy('contracts/meter_audit.py', '0x'+'1'*40, 100, '0x'+'9'*40)
     module = sys.modules[type(a._instance).__module__]
     def gate(tariff_id, start, end):
         if start < t['effective_from']:
             raise module.gl.vm.UserError('[EXPECTED] Bill crosses or falls outside tariff dates')
         return t
-    monkeypatch.setattr(module.gl, 'get_contract_at', lambda address: SimpleNamespace(view=lambda: SimpleNamespace(require_active=gate)))
-    monkeypatch.setattr(module, 'source_text', lambda url, expected: 'Filed schedule 7: rates and effective dates are independently verified in live integration tests.')
+    monkeypatch.setattr(module.gl, 'get_contract_at', lambda address: SimpleNamespace(view=lambda: SimpleNamespace(require_active=gate,require_historical=gate,get_document=lambda digest:b'archived')))
+    module._original_source_text = module.source_text
+    monkeypatch.setattr(module, 'source_text', lambda url, expected, archived=None: 'Filed schedule 7: rates and effective dates are independently verified in live integration tests.')
     # genlayer-test 0.29.2 returns an empty Sandbox result. Exercise the arithmetic
     # through the VM Return wrapper here; the real sandbox is checked on Studio.
     monkeypatch.setattr(module.gl.vm, 'spawn_sandbox', lambda fn, **kw: module.gl.vm.Return(calldata=fn()))

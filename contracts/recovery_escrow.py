@@ -40,7 +40,7 @@ class RecoveryEscrow(gl.Contract):
             raise gl.vm.UserError('[EXPECTED] Verdict is below recovery threshold')
         if gl.message.value <= 0:
             raise gl.vm.UserError('[EXPECTED] Success fee deposit required')
-        self.claims[audit_id] = json.dumps({'id': audit_id, 'status': 'OPEN', 'disputed_cents': v['difference_cents'], 'verdict_revision': v['revision'], 'recovered_cents': 0})
+        self.claims[audit_id] = json.dumps({'id': audit_id, 'status': 'OPEN', 'disputed_cents': v['difference_cents'], 'verdict_revision': v['revision'], 'material_hash': v['material_hash'], 'recovered_cents': 0, 'fee_wei': 0, 'refund_wei': 0})
         self.deposits[audit_id] = gl.message.value
         self.beneficiaries[audit_id] = gl.message.sender_address
         self.total_locked = u256(self.total_locked + gl.message.value)
@@ -56,18 +56,43 @@ class RecoveryEscrow(gl.Contract):
             raise gl.vm.UserError('[EXPECTED] Claim is already settled')
         if recovered_cents < 0 or recovered_cents > c['disputed_cents']:
             raise gl.vm.UserError('[EXPECTED] Invalid recovered amount')
-        # Utility credits occur outside this network. Operator explicitly attests recovery.
+        # An operator attests a utility credit; the fee is proportional to recovery.
         v = gl.get_contract_at(self.audit).view().get_verdict(audit_id)
-        if v['revision'] != c['verdict_revision'] or v['difference_cents'] < self.threshold_cents:
+        if v['material_hash'] != c['material_hash'] or v['classification'] not in ('OVERCHARGE', 'RATE_CLASS') or v['difference_cents'] < self.threshold_cents:
             recovered_cents = 0
         deposit = self.deposits[audit_id]
-        c['status'] = 'RECOVERED' if recovered_cents > 0 else 'REFUNDED'
+        fee = deposit * recovered_cents // c['disputed_cents']
+        refund = deposit - fee
+        c['status'] = ('RECOVERED' if recovered_cents == c['disputed_cents'] else 'PARTIAL') if recovered_cents > 0 else 'REFUNDED'
         c['recovered_cents'] = recovered_cents
+        c['fee_wei'] = int(fee)
+        c['refund_wei'] = int(refund)
         self.claims[audit_id] = json.dumps(c)
         self.deposits[audit_id] = u256(0)
         self.total_locked = u256(self.total_locked - deposit)
-        payee = self.operator if recovered_cents > 0 else self.beneficiaries[audit_id]
-        NativeRecipient(payee).emit_transfer(value=deposit)
+        if fee > 0:
+            NativeRecipient(self.operator).emit_transfer(value=fee)
+        if refund > 0:
+            NativeRecipient(self.beneficiaries[audit_id]).emit_transfer(value=refund)
+
+    @gl.public.write
+    def refund_changed(self, audit_id: str) -> None:
+        # Anyone can finish a correction refund; repeats and unknown claims are safe.
+        if audit_id not in self.claims:
+            return
+        c = json.loads(self.claims[audit_id])
+        if c['status'] != 'OPEN':
+            return
+        v = gl.get_contract_at(self.audit).view().get_verdict(audit_id)
+        if v['material_hash'] == c['material_hash']:
+            return
+        deposit = self.deposits[audit_id]
+        c['status'] = 'REFUNDED'
+        c['refund_wei'] = int(deposit)
+        self.claims[audit_id] = json.dumps(c)
+        self.deposits[audit_id] = u256(0)
+        self.total_locked = u256(self.total_locked-deposit)
+        NativeRecipient(self.beneficiaries[audit_id]).emit_transfer(value=deposit)
 
     @gl.public.write
     def cancel(self, audit_id: str) -> None:
@@ -78,6 +103,7 @@ class RecoveryEscrow(gl.Contract):
             raise gl.vm.UserError('[EXPECTED] Claim is already settled')
         deposit = self.deposits[audit_id]
         c['status'] = 'CANCELLED'
+        c['refund_wei'] = int(deposit)
         self.claims[audit_id] = json.dumps(c)
         self.deposits[audit_id] = u256(0)
         self.total_locked = u256(self.total_locked-deposit)
