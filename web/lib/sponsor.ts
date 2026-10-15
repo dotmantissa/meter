@@ -5,8 +5,8 @@ export async function ensureBondFunds(userId: string, client: Awaited<ReturnType
   const address = client.account!.address;
   if (await client.getBalance({ address }) >= value) return;
   const sql = db();
-  const locked = await sql`INSERT INTO meter_sponsorships(user_id,status) SELECT ${userId},'SUBMITTING' WHERE (SELECT COUNT(*) FROM meter_sponsorships WHERE day=CURRENT_DATE)<100 ON CONFLICT(user_id,day) DO NOTHING RETURNING user_id`;
-  if (!locked.length) throw new HttpError(503, 'Your bond sponsorship is pending or today’s allowance is used. Please check back later.');
+  const reservation = await sql`SELECT meter_reserve_sponsorship(${userId}) AS reserved`;
+  if (!reservation[0]?.reserved) throw new HttpError(503, 'Your bond sponsorship is pending or today’s allowance is used. Please check back later.');
   try {
     const sponsor = operator();
     const grant = BigInt('2000000000000000');

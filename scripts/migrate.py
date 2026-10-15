@@ -16,6 +16,10 @@ def query(sql, params=None):
         return json.load(response)
 
 if __name__=='__main__':
-    for sql in (root/'web/migrations/001_meter.sql').read_text().split(';'):
-        if sql.strip():query(sql)
+    for path in sorted((root/'web/migrations').glob('*.sql')):
+        content=path.read_text()
+        statements=content.split('-- meter:statement') if '-- meter:statement' in content else content.split(';')
+        for sql in statements:
+            if sql.strip():query(sql)
+        print('Applied',path.name)
     print('Meter schema is ready.')

@@ -1,5 +1,6 @@
 import { createClient, createAccount } from 'genlayer-js';
 import { studionet } from 'genlayer-js/chains';
+import { TransactionHashVariant } from 'genlayer-js/types';
 export type Address = `0x${string}`;
 export function addresses() {
   const registry = process.env.TARIFF_REGISTRY_ADDRESS as Address;
@@ -8,7 +9,12 @@ export function addresses() {
   if (![registry, audit, escrow].every(v => /^0x[a-fA-F0-9]{40}$/.test(v || ''))) throw new Error('CONFIG_CONTRACTS');
   return { registry, audit, escrow };
 }
-export function reader() { return createClient({ chain: studionet }); }
+export function reader() {
+  const client=createClient({chain:studionet});
+  const read=client.readContract;
+  client.readContract=args=>read({...args,transactionHashVariant:TransactionHashVariant.LATEST_FINAL});
+  return client;
+}
 export function operator() {
   const key = process.env.GENLAYER_PRIVATE_KEY as Address;
   if (!/^0x[a-fA-F0-9]{64}$/.test(key || '')) throw new Error('CONFIG_SIGNER');
