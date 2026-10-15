@@ -14,3 +14,7 @@ it('renders the complete available history after an unchanged confirmation',()=>
  const html=renderToStaticMarkup(createElement(RevisionHistory,{record}));
  expect(html).toContain('Revision 1');expect(html).toContain('Revision 2');expect(html).toContain('Revision 3');expect(html).toContain('result changed');
 });
+it('keeps cancellation available even when the indexed verdict cannot be displayed',()=>{
+ const html=renderToStaticMarkup(createElement(RecoveryPanel,{record:{...record,status:'FAILED',verdict:null},token:async()=>null,onRefresh:()=>{}}));
+ expect(html).toContain('Cancel and refund');expect(html).not.toContain('disabled=""');
+});

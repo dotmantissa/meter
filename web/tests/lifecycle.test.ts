@@ -97,6 +97,10 @@ describe('independent verdict and operation lifecycles',()=>{
   const record=await refreshAudit(id,'owner');expect(record.verdict?.classification).toBe('MATCH');expect(record.claim?.status).toBe('OPEN');
   await actOnAudit('owner',id,'CANCEL');expect(mocks.write).toHaveBeenCalledWith(expect.objectContaining({functionName:'cancel'}));
  });
+ it('can cancel an actual open claim even when the indexed audit status failed',async()=>{
+  await pg.exec("UPDATE meter_audits SET status='FAILED',verdict=NULL");
+  await actOnAudit('owner',id,'CANCEL');expect(mocks.write).toHaveBeenCalledWith(expect.objectContaining({functionName:'cancel',address:contracts.escrow}));
+ });
 });
 describe('hard sponsorship allowance',()=>{
  it('reserves the last global slot exactly once across distinct users',async()=>{
