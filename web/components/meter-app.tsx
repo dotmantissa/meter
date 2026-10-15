@@ -27,11 +27,11 @@ export function MeterApp() {
   useEffect(() => { const task = setTimeout(() => void loadTariffs(), 0); return () => clearTimeout(task); }, [loadTariffs]);
   useEffect(() => { const task = setTimeout(() => void loadReviews(), 0); return () => clearTimeout(task); }, [loadReviews]);
   useEffect(() => {
-    if (!review || ['FINALIZED', 'FAILED', 'RECEIPT_UNAVAILABLE'].includes(review.status)) return;
+    if (!review) return;
     const timer = setInterval(async () => {
       try { const next = await api<AuditRecord>(`/api/audits/${review.id}`, await getAccessToken()); setReview(next); if (['FINALIZED', 'FAILED'].includes(next.status)) void loadReviews(); }
       catch (e) { setError((e as Error).message); }
-    }, 12000);
+    }, review.status!=='FINALIZED'||(review.operation_status&&!['FINALIZED','FAILED'].includes(review.operation_status))?12000:60000);
     return () => clearInterval(timer);
   }, [review, getAccessToken, loadReviews]);
   async function choose(file?: File) {
