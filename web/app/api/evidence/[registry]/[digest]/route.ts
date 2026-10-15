@@ -4,8 +4,10 @@ export async function GET(_request:Request,context:{params:Promise<{registry:str
  const {registry,digest}=await context.params;
  if(registry.toLowerCase()!==addresses().registry.toLowerCase()||!/^[a-f0-9]{64}$/.test(digest)) return Response.json({error:'Archived evidence not found.'},{status:404});
  try {
-  const bytes=await reader().readContract({address:addresses().registry,functionName:'get_document',args:[digest]});
-  if(!(bytes instanceof Uint8Array)) throw new Error('INVALID_ARCHIVE');
+  const result=await reader().readContract({address:addresses().registry,functionName:'get_document',args:[digest]});
+  // Studio's current RPC encodes contract bytes as hex; other runtimes return bytes.
+  const bytes=result instanceof Uint8Array?result:typeof result==='string'&&/^0x(?:[a-fA-F0-9]{2})+$/.test(result)?Uint8Array.from(result.slice(2).match(/../g)!,byte=>parseInt(byte,16)):null;
+  if(!bytes) throw new Error('INVALID_ARCHIVE');
   const hash=await crypto.subtle.digest('SHA-256',Uint8Array.from(bytes));
   if(Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('')!==digest) throw new Error('ARCHIVE_MISMATCH');
   return new Response(Uint8Array.from(bytes),{headers:{'Content-Type':'application/pdf','Content-Disposition':`inline; filename="meter-evidence-${digest}.pdf"`,'Cache-Control':'public,max-age=31536000,immutable','X-Content-Type-Options':'nosniff'}});
