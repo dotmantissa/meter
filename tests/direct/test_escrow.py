@@ -85,3 +85,18 @@ def test_one_cent_and_partial_recovery_release_proportional_fee(escrow,direct_vm
     direct_vm.value=10000;e.open_claim('bill');direct_vm.value=0;e.resolve('bill',1)
     c=e.get_claim('bill');assert c['fee_wei']==4 and c['refund_wei']==9996 and c['status']=='PARTIAL'
     assert sum(t[1]['value'] for t in transfers)==10000
+
+
+def test_partial_fee_and_refund_go_to_distinct_operator_and_depositor(direct_vm,direct_deploy,direct_bob,monkeypatch):
+    import sys
+    e=direct_deploy('contracts/recovery_escrow.py','0x'+'1'*40,1000)
+    module=sys.modules[type(e._instance).__module__]
+    operator=direct_vm.sender;customer=module.Address(direct_bob.as_bytes if hasattr(direct_bob,'as_bytes') else direct_bob)
+    verdict={'classification':'OVERCHARGE','difference_cents':2000,'revision':1,'material_hash':'a'*64}
+    monkeypatch.setattr(module.gl,'get_contract_at',lambda address:SimpleNamespace(view=lambda:SimpleNamespace(get_owner=lambda i:customer,get_verdict=lambda i:verdict)))
+    transfers=[]
+    monkeypatch.setattr(module,'NativeRecipient',lambda address:SimpleNamespace(emit_transfer=lambda **kw:transfers.append((str(address),kw['value']))))
+    direct_vm.sender=direct_bob;direct_vm.value=10000;e.open_claim('bill')
+    direct_vm.sender=operator;direct_vm.value=0;e.resolve('bill',1)
+    assert transfers==[(str(e.operator),5),(str(customer),9995)]
+    assert str(e.operator)!=str(customer) and e.get_pool()['locked_wei']==0

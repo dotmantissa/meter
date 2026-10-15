@@ -1,12 +1,10 @@
 """NIST SP 800-38A vectors and an encrypted PDF through the deployed ZIP reader."""
-import io
 import json
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
-from pypdf import PdfReader, PdfWriter
 from pypdf.errors import PdfStreamError
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -41,12 +39,8 @@ def test_pdf_padding_is_checked():
 
 
 @pytest.mark.parametrize('algorithm',['AES-128','AES-256'])
-def test_real_encrypted_pdf_uses_packaged_pure_python_provider(tmp_path,algorithm):
-    from test_pdf import document
-    writer=PdfWriter(clone_from=PdfReader(io.BytesIO(document(['Filed public rate with all content preserved. '*8]))))
-    writer.encrypt('',algorithm=algorithm)
-    fixture=tmp_path/'public.pdf'
-    with fixture.open('wb') as output:writer.write(output)
+def test_real_encrypted_pdf_uses_packaged_pure_python_provider(algorithm):
+    fixture=ROOT/'tests/fixtures'/(algorithm.lower()+'.pdf')
     code='''import sys,types,json
 from pathlib import Path
 module=types.ModuleType('contract');module.__path__=[str(Path('.contract-build/meter_audit.zip').resolve())+'/contract'];sys.modules['contract']=module
