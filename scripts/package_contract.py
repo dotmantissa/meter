@@ -19,7 +19,7 @@ metadata = {}
 if manifest_file.exists():
     metadata = json.loads(manifest_file.read_text()).get('contracts', {}).get('audit', {}).get('archive_entry_metadata', {})
 
-with zipfile.ZipFile(output / 'meter_audit.zip', 'w', compression=zipfile.ZIP_STORED) as z:
+with zipfile.ZipFile(output / 'meter_audit.zip.tmp', 'w', compression=zipfile.ZIP_STORED) as z:
     def entry(name, data):
         saved = metadata.get(name, {})
         info = zipfile.ZipInfo(name, tuple(saved.get('date_time', (1980, 1, 1, 0, 0, 0))))
@@ -51,4 +51,5 @@ crypt_provider = ('pyaes', '1.6.1')
     module_entry('contract/pdf_aes_provider.py',(root/'scripts/pdf_aes_provider.py').read_text())
     entry('contract/pypdf/LICENSE', (reader.parent / 'pypdf-6.10.2.dist-info/licenses/LICENSE').read_bytes())
     entry('contract/pyaes/LICENSE', (aes_reader.parent / 'pyaes-1.6.1.dist-info/licenses/LICENSE.txt').read_bytes())
+(output / 'meter_audit.zip.tmp').replace(output / 'meter_audit.zip')
 print('Audit bundle SHA256:', hashlib.sha256((output / 'meter_audit.zip').read_bytes()).hexdigest())

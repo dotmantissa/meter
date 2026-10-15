@@ -1,5 +1,6 @@
 """NIST SP 800-38A vectors and an encrypted PDF through the deployed ZIP reader."""
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -14,6 +15,15 @@ provider=importlib.util.module_from_spec(spec);spec.loader.exec_module(provider)
 CryptAES=provider.CryptAES
 aes_cbc_decrypt=provider.aes_cbc_decrypt; aes_cbc_encrypt=provider.aes_cbc_encrypt
 aes_ecb_decrypt=provider.aes_ecb_decrypt; aes_ecb_encrypt=provider.aes_ecb_encrypt
+
+
+@pytest.fixture(scope='module')
+def bundle():
+    # A clean clone has no ignored build artifacts. Build the exact deployment
+    # package rather than depending on a previous developer's local ZIP.
+    environment={**os.environ,'PYTHONPATH':os.pathsep.join(sys.path)}
+    subprocess.run([sys.executable,str(ROOT/'scripts/package_contract.py')],cwd=ROOT,env=environment,text=True,capture_output=True,check=True)
+    return environment
 
 
 @pytest.mark.parametrize('key,ecb,cbc',[
@@ -39,7 +49,7 @@ def test_pdf_padding_is_checked():
 
 
 @pytest.mark.parametrize('algorithm',['AES-128','AES-256'])
-def test_real_encrypted_pdf_uses_packaged_pure_python_provider(algorithm):
+def test_real_encrypted_pdf_uses_packaged_pure_python_provider(algorithm,bundle):
     fixture=ROOT/'tests/fixtures'/(algorithm.lower()+'.pdf')
     code='''import sys,types,json
 from pathlib import Path
@@ -49,7 +59,7 @@ from contract.pypdf._crypt_providers import crypt_provider
 reader=PdfReader(sys.argv[1],strict=True)
 print(json.dumps({'provider':crypt_provider,'text':reader.pages[0].extract_text()}))
 '''
-    result=subprocess.run([sys.executable,'-c',code,str(fixture)],cwd=ROOT,text=True,capture_output=True,check=True)
+    result=subprocess.run([sys.executable,'-c',code,str(fixture)],cwd=ROOT,env=bundle,text=True,capture_output=True,check=True)
     parsed=json.loads(result.stdout)
     assert parsed['provider']==['pyaes','1.6.1']
     assert parsed['text'].count('Filed public rate')==8
